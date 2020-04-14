@@ -38,10 +38,10 @@ var completionCmd = &cobra.Command{
 To configure your shell to load completions for each session
 
 # bash
-echo '. <(frgm completion bash)' > ~/.bashrc
+echo '. <(ghput completion bash)' > ~/.bashrc
 
 # zsh
-frgm completion zsh > $fpath[1]/_frgm
+ghput completion zsh > $fpath[1]/_ghput
 `,
 	ValidArgs: []string{"bash", "zsh"},
 	Args: func(cmd *cobra.Command, args []string) error {
