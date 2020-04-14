@@ -1,0 +1,4 @@
+.go-version
+dist/
+coverage.txt
+/ghput
