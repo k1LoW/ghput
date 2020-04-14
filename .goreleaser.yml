@@ -1,0 +1,72 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+builds:
+-
+  id: ghput-linux
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - linux
+  ldflags:
+    - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
+-
+  id: ghput-darwin
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - darwin
+  ldflags:
+    - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
+archives:
+-
+  id: ghput-archive
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  format_overrides:
+    - goos: darwin
+      format: zip
+  files:
+    - CREDITS
+    - README.md
+    - CHANGELOG.md
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Version }}-next"
+changelog:
+  skip: true
+brews:
+-
+  name: ghput
+  github:
+    owner: k1LoW
+    name: homebrew-tap
+  commit_author:
+    name: k1LoW
+    email: k1lowxb@gmail.com
+  homepage: https://github.com/k1LoW/ghput
+  description: ghput is a CI-Friendly tool for put comment on GitHub.
+  install: |
+    system './ghput', 'completion', 'bash', '--out', 'ghput.bash'
+    system './ghput', 'completion', 'zsh', '--out', 'ghput.zsh'
+    bin.install 'ghput'
+    bash_completion.install 'ghput.bash' => 'ghput'
+    zsh_completion.install 'ghput.zsh' => '_ghput'
+nfpms:
+  -
+    id: ghput-nfpms
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"
+    builds:
+    - ghput-linux
+    homepage: https://github.com/k1LoW/ghput
+    maintainer: Ken'ichiro Oyama <k1lowxb@gmail.com>
+    description: ghput is a CI-Friendly tool for put comment on GitHub.
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin
+    epoch: 1
