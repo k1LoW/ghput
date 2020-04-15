@@ -51,7 +51,7 @@ var prCommentCmd = &cobra.Command{
 			return errors.New("ghput need STDIN. Please use pipe")
 		}
 		if owner == "" || repo == "" || number == 0 {
-			return errors.New("ghput need `--owner` AND `--repo` AND `--number` flag")
+			return errors.New("`ghput pr-comment` need `--owner` AND `--repo` AND `--number` flag")
 		}
 		return nil
 	},
