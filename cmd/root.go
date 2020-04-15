@@ -26,6 +26,8 @@ var (
 	owner      string
 	repo       string
 	number     int
+	header     string
+	footer     string
 	allowMulti bool
 )
 

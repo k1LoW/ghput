@@ -29,6 +29,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/k1LoW/ghput/gh"
 	"github.com/mattn/go-colorable"
@@ -69,7 +70,7 @@ func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
 	if err != nil {
 		return 1, err
 	}
-	c, err := getStdin(ctx, stdin)
+	comment, err := makeComment(ctx, stdin, header, footer)
 	if err != nil {
 		return 1, err
 	}
@@ -78,10 +79,29 @@ func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
 			return 1, err
 		}
 	}
-	if err := g.PutPrComment(ctx, number, string(c)+gh.Footer); err != nil {
+	if err := g.PutPrComment(ctx, number, comment); err != nil {
 		return 1, err
 	}
 	return 0, nil
+}
+
+func makeComment(ctx context.Context, stdin io.Reader, header, footer string) (string, error) {
+	c, err := getStdin(ctx, stdin)
+	if err != nil {
+		return "", err
+	}
+	body := string(c)
+	if body != "" && !strings.HasSuffix(body, "\n") {
+		body += "\n"
+	}
+	if header != "" && !strings.HasSuffix(header, "\n") {
+		header += "\n"
+	}
+	if footer != "" && !strings.HasSuffix(footer, "\n") {
+		footer += "\n"
+	}
+	return fmt.Sprintf("%s%s%s%s\n", header, body, footer, gh.Footer), nil
+
 }
 
 func getStdin(ctx context.Context, stdin io.Reader) (string, error) {
@@ -113,5 +133,7 @@ func init() {
 	prCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
 	prCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
 	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
+	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
+	prCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
 	prCommentCmd.Flags().BoolVarP(&allowMulti, "allow-multiple-comments", "", false, "allow multiple comments")
 }
