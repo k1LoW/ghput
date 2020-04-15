@@ -5,7 +5,7 @@ ghput is a CI-Friendly tool for put comment on GitHub.
 ## Usage
 
 ``` console
-$ echo 'This is comment message !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo ghput --number 2
+$ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo ghput --number 2
 ```
 
 **GitHub Enterprise:**
