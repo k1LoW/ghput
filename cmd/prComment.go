@@ -22,14 +22,16 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"bufio"
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 
 	"github.com/k1LoW/ghput/gh"
+	"github.com/mattn/go-colorable"
 	"github.com/spf13/cobra"
 )
 
@@ -62,19 +64,43 @@ var prCommentCmd = &cobra.Command{
 }
 
 func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
+	ctx := context.Background()
 	g, err := gh.New(owner, repo)
 	if err != nil {
 		return 1, err
 	}
-	c, err := ioutil.ReadAll(stdin)
+	c, err := getStdin(ctx, stdin)
 	if err != nil {
 		return 1, err
 	}
-	ctx := context.Background()
 	if err := g.PutPrComment(ctx, number, string(c)); err != nil {
 		return 1, err
 	}
 	return 0, nil
+}
+
+func getStdin(ctx context.Context, stdin io.Reader) (string, error) {
+	in := bufio.NewReader(stdin)
+	out := new(bytes.Buffer)
+	nc := colorable.NewNonColorable(out)
+	for {
+		s, err := in.ReadBytes('\n')
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return "", err
+		}
+		select {
+		case <-ctx.Done():
+			break
+		default:
+			_, err = nc.Write(s)
+			if err != nil {
+				return "", err
+			}
+		}
+	}
+	return out.String(), nil
 }
 
 func init() {
