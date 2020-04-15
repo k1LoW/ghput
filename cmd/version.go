@@ -31,8 +31,8 @@ import (
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print frgm version",
-	Long:  `Print frgm version.`,
+	Short: "Print ghput version",
+	Long:  `Print ghput version.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(version.Version)
 	},

@@ -22,17 +22,13 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"bufio"
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
 	"github.com/k1LoW/ghput/gh"
-	"github.com/mattn/go-colorable"
 	"github.com/spf13/cobra"
 )
 
@@ -83,49 +79,6 @@ func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
 		return 1, err
 	}
 	return 0, nil
-}
-
-func makeComment(ctx context.Context, stdin io.Reader, header, footer string) (string, error) {
-	c, err := getStdin(ctx, stdin)
-	if err != nil {
-		return "", err
-	}
-	body := string(c)
-	if body != "" && !strings.HasSuffix(body, "\n") {
-		body += "\n"
-	}
-	if header != "" && !strings.HasSuffix(header, "\n") {
-		header += "\n"
-	}
-	if footer != "" && !strings.HasSuffix(footer, "\n") {
-		footer += "\n"
-	}
-	return fmt.Sprintf("%s%s%s%s\n", header, body, footer, gh.Footer), nil
-
-}
-
-func getStdin(ctx context.Context, stdin io.Reader) (string, error) {
-	in := bufio.NewReader(stdin)
-	out := new(bytes.Buffer)
-	nc := colorable.NewNonColorable(out)
-	for {
-		s, err := in.ReadBytes('\n')
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			return "", err
-		}
-		select {
-		case <-ctx.Done():
-			break
-		default:
-			_, err = nc.Write(s)
-			if err != nil {
-				return "", err
-			}
-		}
-	}
-	return out.String(), nil
 }
 
 func init() {
