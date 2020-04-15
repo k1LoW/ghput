@@ -16,6 +16,22 @@ $ export GITHUB_BASE_URL=https://git.my-company.com/api/v3/
 
 ## Install
 
+**deb:**
+
+Use [dpkg-i-from-url](https://github.com/k1LoW/dpkg-i-from-url)
+
+``` console
+$ export GHPUT_VERSION=X.X.X
+$ curl -L https://git.io/dpkg-i-from-url | bash -s -- https://github.com/k1LoW/ghput/releases/download/v$GHPUT_VERSION/ghput_$GHPUT_VERSION-1_amd64.deb
+```
+
+**RPM:**
+
+``` console
+$ export GHPUT_VERSION=X.X.X
+$ yum install https://github.com/k1LoW/ghput/releases/download/v$GHPUT_VERSION/ghput_$GHPUT_VERSION-1_amd64.rpm
+```
+
 **homebrew tap:**
 
 ```console
