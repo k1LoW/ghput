@@ -23,9 +23,10 @@ import (
 )
 
 var (
-	owner  string
-	repo   string
-	number int
+	owner      string
+	repo       string
+	number     int
+	allowMulti bool
 )
 
 // rootCmd represents the base command when called without any subcommands
