@@ -73,7 +73,12 @@ func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
 	if err != nil {
 		return 1, err
 	}
-	if err := g.PutPrComment(ctx, number, string(c)); err != nil {
+	if !allowMulti {
+		if err := g.DeleteCurrentPrComment(ctx, number); err != nil {
+			return 1, err
+		}
+	}
+	if err := g.PutPrComment(ctx, number, string(c)+gh.Footer); err != nil {
 		return 1, err
 	}
 	return 0, nil
@@ -108,4 +113,5 @@ func init() {
 	prCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
 	prCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
 	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
+	prCommentCmd.Flags().BoolVarP(&allowMulti, "allow-multiple-comments", "", false, "allow multiple comments")
 }
