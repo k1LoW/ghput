@@ -62,18 +62,16 @@ var prCommentCmd = &cobra.Command{
 
 func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
 	ctx := context.Background()
-	g, err := gh.New(owner, repo)
+	g, err := gh.New(owner, repo, key)
 	if err != nil {
 		return 1, err
 	}
-	comment, err := makeComment(ctx, stdin, header, footer)
+	comment, err := g.MakeComment(ctx, stdin, header, footer)
 	if err != nil {
 		return 1, err
 	}
-	if !allowMulti {
-		if err := g.DeleteCurrentPrComment(ctx, number); err != nil {
-			return 1, err
-		}
+	if err := g.DeleteCurrentPrComment(ctx, number); err != nil {
+		return 1, err
 	}
 	if err := g.PutPrComment(ctx, number, comment); err != nil {
 		return 1, err
@@ -88,5 +86,5 @@ func init() {
 	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
 	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
 	prCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
-	prCommentCmd.Flags().BoolVarP(&allowMulti, "allow-multiple-comments", "", false, "allow multiple comments")
+	prCommentCmd.Flags().StringVarP(&key, "key", "", "", "key for uniquely identifying the comment")
 }
