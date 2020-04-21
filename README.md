@@ -1,4 +1,4 @@
-# ghput
+# ghput ![build](https://github.com/k1LoW/ghput/workflows/build/badge.svg)
 
 ghput is a CI-Friendly tool for put comment on GitHub.
 
