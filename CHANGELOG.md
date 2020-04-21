@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.1](https://github.com/k1LoW/ghput/compare/v0.2.0...v0.2.1) (2020-04-21)
+
+* Fix ghput footer [#5](https://github.com/k1LoW/ghput/pull/5) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.2.0](https://github.com/k1LoW/ghput/compare/v0.1.0...v0.2.0) (2020-04-17)
 
 * Add --key option for uniquely identifying the comment [#4](https://github.com/k1LoW/ghput/pull/4) ([k1LoW](https://github.com/k1LoW))
