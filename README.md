@@ -4,6 +4,12 @@ ghput is a CI friendly tool that puts `*` on GitHub.
 
 ## Usage
 
+**Put comment to issue:**
+
+``` console
+$ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput issue-comment --owner k1LoW --repo myrepo --number 1
+```
+
 **Put comment to pull request:**
 
 ``` console
