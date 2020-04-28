@@ -48,7 +48,7 @@ brews:
     name: k1LoW
     email: k1lowxb@gmail.com
   homepage: https://github.com/k1LoW/ghput
-  description: ghput is a CI friendly tool that puts * on GitHub.
+  description: ghput is a CI-friendly tool that puts * on GitHub.
   install: |
     system './ghput', 'completion', 'bash', '--out', 'ghput.bash'
     system './ghput', 'completion', 'zsh', '--out', 'ghput.zsh'
@@ -63,7 +63,7 @@ nfpms:
     - ghput-linux
     homepage: https://github.com/k1LoW/ghput
     maintainer: Ken'ichiro Oyama <k1lowxb@gmail.com>
-    description: ghput is a CI friendly tool that puts * on GitHub.
+    description: ghput is a CI-friendly tool that puts * on GitHub.
     license: MIT
     formats:
       - deb
