@@ -1,6 +1,6 @@
 # ghput [![Build Status](https://github.com/k1LoW/ghput/workflows/build/badge.svg)](https://github.com/k1LoW/ghput/actions)
 
-ghput is a CI friendly tool that puts * on GitHub.
+ghput is a CI friendly tool that puts `*` on GitHub.
 
 ## Usage
 
