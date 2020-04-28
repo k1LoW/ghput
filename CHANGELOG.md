@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.4.0](https://github.com/k1LoW/ghput/compare/v0.3.0...v0.4.0) (2020-04-28)
+
+* Add `ghput issue-comment` [#7](https://github.com/k1LoW/ghput/pull/7) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.3.0](https://github.com/k1LoW/ghput/compare/v0.2.1...v0.3.0) (2020-04-28)
 
 * Add `ghput commit` [#6](https://github.com/k1LoW/ghput/pull/6) ([k1LoW](https://github.com/k1LoW))
