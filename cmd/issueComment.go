@@ -22,10 +22,13 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 
+	"github.com/k1LoW/ghput/gh"
 	"github.com/spf13/cobra"
 )
 
@@ -49,12 +52,31 @@ var issueCommentCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err := runPrComment(os.Stdin, os.Stdout)
+		err := runIssueComment(os.Stdin, os.Stdout)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
 			os.Exit(1)
 		}
 	},
+}
+
+func runIssueComment(stdin io.Reader, stdout io.Writer) error {
+	ctx := context.Background()
+	g, err := gh.New(owner, repo, key)
+	if err != nil {
+		return err
+	}
+	comment, err := g.MakeComment(ctx, stdin, header, footer)
+	if err != nil {
+		return err
+	}
+	if err := g.DeleteCurrentIssueComment(ctx, number); err != nil {
+		return err
+	}
+	if err := g.PutIssueComment(ctx, number, comment); err != nil {
+		return err
+	}
+	return nil
 }
 
 func init() {

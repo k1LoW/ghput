@@ -91,7 +91,7 @@ func (g *Gh) CommentFooter() string {
 	return fmt.Sprintf(footerFormat, key)
 }
 
-func (g *Gh) PutPrComment(ctx context.Context, n int, comment string) error {
+func (g *Gh) PutIssueComment(ctx context.Context, n int, comment string) error {
 	c := &github.IssueComment{Body: &comment}
 	if _, _, err := g.client.Issues.CreateComment(ctx, g.owner, g.repo, n, c); err != nil {
 		return err
@@ -99,7 +99,7 @@ func (g *Gh) PutPrComment(ctx context.Context, n int, comment string) error {
 	return nil
 }
 
-func (g *Gh) DeleteCurrentPrComment(ctx context.Context, n int) error {
+func (g *Gh) DeleteCurrentIssueComment(ctx context.Context, n int) error {
 	listOptions := &github.IssueListCommentsOptions{}
 	comments, _, err := g.client.Issues.ListComments(ctx, g.owner, g.repo, n, listOptions)
 	if err != nil {
