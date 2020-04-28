@@ -52,31 +52,31 @@ var prCommentCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		status, err := runPrComment(os.Stdin, os.Stdout)
+		err := runPrComment(os.Stdin, os.Stdout)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
 		}
-		os.Exit(status)
 	},
 }
 
-func runPrComment(stdin io.Reader, stdout io.Writer) (int, error) {
+func runPrComment(stdin io.Reader, stdout io.Writer) error {
 	ctx := context.Background()
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
-		return 1, err
+		return err
 	}
 	comment, err := g.MakeComment(ctx, stdin, header, footer)
 	if err != nil {
-		return 1, err
+		return err
 	}
 	if err := g.DeleteCurrentPrComment(ctx, number); err != nil {
-		return 1, err
+		return err
 	}
 	if err := g.PutPrComment(ctx, number, comment); err != nil {
-		return 1, err
+		return err
 	}
-	return 0, nil
+	return nil
 }
 
 func init() {
