@@ -23,19 +23,23 @@ import (
 )
 
 var (
-	owner  string
-	repo   string
-	number int
-	header string
-	footer string
-	key    string
+	owner   string
+	repo    string
+	number  int
+	header  string
+	footer  string
+	key     string
+	branch  string
+	file    string
+	path    string
+	message string
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ghput",
-	Short: "ghput",
-	Long:  `ghput.`,
+	Short: "ghput is a CI friendly tool that puts * on GitHub.",
+	Long:  `ghput is a CI friendly tool that puts * on GitHub.`,
 }
 
 func Execute() {

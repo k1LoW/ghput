@@ -1,11 +1,19 @@
 # ghput [![Build Status](https://github.com/k1LoW/ghput/workflows/build/badge.svg)](https://github.com/k1LoW/ghput/actions)
 
-ghput is a CI-Friendly tool for put comment on GitHub.
+ghput is a CI friendly tool that puts * on GitHub.
 
 ## Usage
 
+**Put comment to pull request:**
+
 ``` console
-$ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo ghput --number 2
+$ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo myrepo --number 2
+```
+
+**Put commit to branch:**
+
+``` console
+$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branch master --file file.txt --path path/to/file.txt --message 'Commit file !!'
 ```
 
 **GitHub Enterprise:**
