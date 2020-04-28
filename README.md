@@ -1,6 +1,6 @@
-# ghput [![Build Status](https://github.com/k1LoW/ghput/workflows/build/badge.svg)](https://github.com/k1LoW/ghput/actions)
+# ghput [![Build Status](https://github.com/k1LoW/ghput/workflows/build/badge.svg)](https://github.com/k1LoW/ghput/actions) [![GitHub release](https://img.shields.io/github/release/k1LoW/ghput.svg)](https://github.com/k1LoW/ghput/releases)
 
-ghput is a CI-friendly tool that puts `*` on GitHub.
+:octocat: ghput is a CI-friendly tool that puts `*` on GitHub.
 
 ## Usage
 
@@ -22,7 +22,7 @@ $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --o
 $ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branch master --file file.txt --path path/to/file.txt --message 'Commit file !!'
 ```
 
-**GitHub Enterprise:**
+**Use on GitHub Enterprise:**
 
 ``` console
 $ export GITHUB_BASE_URL=https://git.my-company.com/api/v3/
