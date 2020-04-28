@@ -4,12 +4,16 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
 	"os"
+	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -109,6 +113,94 @@ func (g *Gh) DeleteCurrentPrComment(ctx context.Context, n int) error {
 			}
 		}
 	}
+	return nil
+}
+
+func (g *Gh) CommitAndPush(ctx context.Context, branch, file, rPath, message string) error {
+	content := ""
+	if file != "" {
+		f, err := os.Stat(file)
+		if err != nil {
+			return err
+		}
+		if f.IsDir() {
+			return errors.New("'ghput commit' does not yet support directory commit.")
+		}
+		b, err := ioutil.ReadFile(filepath.Clean(file))
+		if err != nil {
+			return err
+		}
+		content = string(b)
+
+		if rPath == "" {
+			rPath = filepath.Base(file)
+		}
+	}
+
+	srv := g.client.Git
+
+	dRef, _, err := srv.GetRef(ctx, g.owner, g.repo, path.Join("heads", branch))
+	if err != nil {
+		return err
+	}
+
+	parent, _, err := srv.GetCommit(ctx, g.owner, g.repo, *dRef.Object.SHA)
+	if err != nil {
+		return err
+	}
+
+	var tree *github.Tree
+
+	if rPath != "" {
+		blob := &github.Blob{
+			Content:  github.String(content),
+			Encoding: github.String("utf-8"),
+			Size:     github.Int(len(content)),
+		}
+
+		resB, _, err := srv.CreateBlob(ctx, g.owner, g.repo, blob)
+		if err != nil {
+			return err
+		}
+
+		entry := github.TreeEntry{
+			Path: github.String(rPath),
+			Mode: github.String("100644"),
+			Type: github.String("blob"),
+			SHA:  resB.SHA,
+		}
+
+		entries := []github.TreeEntry{entry}
+
+		tree, _, err = srv.CreateTree(ctx, g.owner, g.repo, *dRef.Object.SHA, entries)
+		if err != nil {
+			return err
+		}
+	} else {
+		tree, _, err = srv.GetTree(ctx, g.owner, g.repo, *parent.Tree.SHA, false)
+	}
+
+	commit := &github.Commit{
+		Message: github.String(message),
+		Tree:    tree,
+		Parents: []github.Commit{*parent},
+	}
+	resC, _, err := srv.CreateCommit(ctx, g.owner, g.repo, commit)
+	if err != nil {
+		return err
+	}
+
+	nref := &github.Reference{
+		Ref: github.String(path.Join("refs", "heads", branch)),
+		Object: &github.GitObject{
+			Type: github.String("commit"),
+			SHA:  resC.SHA,
+		},
+	}
+	if _, _, err := srv.UpdateRef(ctx, g.owner, g.repo, nref, false); err != nil {
+		return err
+	}
+
 	return nil
 }
 
