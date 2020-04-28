@@ -32,11 +32,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// prCommentCmd represents the prComment command
-var prCommentCmd = &cobra.Command{
-	Use:   "pr-comment",
-	Short: "Put comment to pull request",
-	Long:  `Put comment to pull request.`,
+// issueCommentCmd represents the issueComment command
+var issueCommentCmd = &cobra.Command{
+	Use:   "issue-comment",
+	Short: "Put comment to issue",
+	Long:  `Put comment to issue.`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		fi, err := os.Stdin.Stat()
 		if err != nil {
@@ -47,12 +47,12 @@ var prCommentCmd = &cobra.Command{
 			return errors.New("ghput need STDIN. Please use pipe")
 		}
 		if owner == "" || repo == "" || number == 0 {
-			return errors.New("`ghput pr-comment` need `--owner` AND `--repo` AND `--number` flag")
+			return errors.New("`ghput issue-comment` need `--owner` AND `--repo` AND `--number` flag")
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err := runPrComment(os.Stdin, os.Stdout)
+		err := runIssueComment(os.Stdin, os.Stdout)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 			os.Exit(1)
@@ -60,18 +60,18 @@ var prCommentCmd = &cobra.Command{
 	},
 }
 
-func runPrComment(stdin io.Reader, stdout io.Writer) error {
+func runIssueComment(stdin io.Reader, stdout io.Writer) error {
 	ctx := context.Background()
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
 		return err
 	}
-	b, err := g.IsPullRequest(ctx, number)
+	b, err := g.IsIssue(ctx, number)
 	if err != nil {
 		return err
 	}
 	if !b {
-		return fmt.Errorf("#%d is not pull request", number)
+		return fmt.Errorf("#%d is not issue", number)
 	}
 	comment, err := g.MakeComment(ctx, stdin, header, footer)
 	if err != nil {
@@ -87,11 +87,11 @@ func runPrComment(stdin io.Reader, stdout io.Writer) error {
 }
 
 func init() {
-	rootCmd.AddCommand(prCommentCmd)
-	prCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
-	prCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
-	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
-	prCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
-	prCommentCmd.Flags().StringVarP(&key, "key", "", "", "key for uniquely identifying the comment")
+	rootCmd.AddCommand(issueCommentCmd)
+	issueCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
+	issueCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
+	issueCommentCmd.Flags().IntVarP(&number, "number", "", 0, "issue number")
+	issueCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
+	issueCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
+	issueCommentCmd.Flags().StringVarP(&key, "key", "", "", "key for uniquely identifying the comment")
 }
