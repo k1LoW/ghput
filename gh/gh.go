@@ -91,6 +91,22 @@ func (g *Gh) CommentFooter() string {
 	return fmt.Sprintf(footerFormat, key)
 }
 
+func (g Gh) IsPullRequest(ctx context.Context, n int) (bool, error) {
+	i, _, err := g.client.Issues.Get(ctx, g.owner, g.repo, n)
+	if err != nil {
+		return false, err
+	}
+	return i.IsPullRequest(), nil
+}
+
+func (g Gh) IsIssue(ctx context.Context, n int) (bool, error) {
+	b, err := g.IsPullRequest(ctx, n)
+	if err != nil {
+		return false, err
+	}
+	return !b, nil
+}
+
 func (g *Gh) PutIssueComment(ctx context.Context, n int, comment string) error {
 	c := &github.IssueComment{Body: &comment}
 	if _, _, err := g.client.Issues.CreateComment(ctx, g.owner, g.repo, n, c); err != nil {

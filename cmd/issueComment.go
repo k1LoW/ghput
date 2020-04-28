@@ -54,7 +54,7 @@ var issueCommentCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		err := runIssueComment(os.Stdin, os.Stdout)
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
+			_, _ = fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 			os.Exit(1)
 		}
 	},
@@ -65,6 +65,13 @@ func runIssueComment(stdin io.Reader, stdout io.Writer) error {
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
 		return err
+	}
+	b, err := g.IsIssue(ctx, number)
+	if err != nil {
+		return err
+	}
+	if !b {
+		return fmt.Errorf("#%d is not issue", number)
 	}
 	comment, err := g.MakeComment(ctx, stdin, header, footer)
 	if err != nil {
