@@ -58,7 +58,7 @@ var gistCmd = &cobra.Command{
 	},
 }
 
-func runGist(stdin io.Reader, stdout io.Writer) error {
+func runGist(stdin io.Reader, stdout io.Writer) (err error) {
 	ctx := context.Background()
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
@@ -73,7 +73,9 @@ func runGist(stdin io.Reader, stdout io.Writer) error {
 		if err != nil {
 			return err
 		}
-		defer f.Close()
+		defer func() {
+			err = f.Close()
+		}()
 		r = f
 		fname = filepath.Base(file)
 	} else {
