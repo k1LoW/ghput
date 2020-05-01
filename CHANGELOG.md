@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.5.0](https://github.com/k1LoW/ghput/compare/v0.4.0...v0.5.0) (2020-05-02)
+
+* [BREAKING]Change footer key [#9](https://github.com/k1LoW/ghput/pull/9) ([k1LoW](https://github.com/k1LoW))
+* Add `ghput gist` [#8](https://github.com/k1LoW/ghput/pull/8) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.4.0](https://github.com/k1LoW/ghput/compare/v0.3.0...v0.4.0) (2020-04-28)
 
 * Add `ghput issue-comment` [#7](https://github.com/k1LoW/ghput/pull/7) ([k1LoW](https://github.com/k1LoW))
