@@ -220,6 +220,33 @@ func (g *Gh) CommitAndPush(ctx context.Context, branch, file, rPath, message str
 	return nil
 }
 
+func (g *Gh) CreateGist(ctx context.Context, fname string, public bool, in io.Reader, out io.Writer) error {
+	b, err := ioutil.ReadAll(in)
+	if err != nil {
+		return err
+	}
+
+	content := string(b)
+	files := make(map[github.GistFilename]github.GistFile, 1)
+	files[github.GistFilename(fname)] = github.GistFile{
+		Size:     github.Int(len(content)),
+		Filename: github.String(fname),
+		Content:  github.String(content),
+	}
+
+	input := &github.Gist{
+		Description: github.String("Put by ghput"),
+		Public:      github.Bool(public),
+		Files:       files,
+	}
+	gist, _, err := g.client.Gists.Create(ctx, input)
+	if err != nil {
+		return err
+	}
+	_, _ = fmt.Fprintf(out, "%s\n", *gist.HTMLURL)
+	return nil
+}
+
 type roundTripper struct {
 	transport   *http.Transport
 	accessToken string

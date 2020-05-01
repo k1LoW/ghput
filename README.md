@@ -22,6 +22,16 @@ $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --o
 $ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branch master --file file.txt --path path/to/file.txt --message 'Commit file !!'
 ```
 
+**Put file to Gist:**
+
+``` console
+$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput gist --file file.txt
+```
+
+``` console
+$ cat file.txt | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput gist
+```
+
 **Use on GitHub Enterprise:**
 
 ``` console

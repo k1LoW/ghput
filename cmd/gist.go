@@ -27,24 +27,30 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/k1LoW/ghput/gh"
 	"github.com/spf13/cobra"
 )
 
-// commitCmd represents the commit command
-var commitCmd = &cobra.Command{
-	Use:   "commit",
-	Short: "Put commit to branch",
-	Long:  `Put commit to branch.`,
+// gistCmd represents the gist command
+var gistCmd = &cobra.Command{
+	Use:   "gist",
+	Short: "Put gist",
+	Long:  `Put gist.`,
 	Args: func(cmd *cobra.Command, args []string) error {
-		if owner == "" || repo == "" || branch == "" {
-			return errors.New("`ghput commit` need `--owner` AND `--repo` AND `--branch` flag")
+		fi, err := os.Stdin.Stat()
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
+		}
+		if (fi.Mode()&os.ModeCharDevice) != 0 && file == "" {
+			return errors.New("`ghput gist` need `--file` OR STDIN")
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		err := runCommit(os.Stdin, os.Stdout)
+		err := runGist(os.Stdin, os.Stdout)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 			os.Exit(1)
@@ -52,21 +58,35 @@ var commitCmd = &cobra.Command{
 	},
 }
 
-func runCommit(stdin io.Reader, stdout io.Writer) error {
+func runGist(stdin io.Reader, stdout io.Writer) (err error) {
 	ctx := context.Background()
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
 		return err
 	}
-	return g.CommitAndPush(ctx, branch, file, path, message)
+	var (
+		r     io.Reader
+		fname string
+	)
+	if file != "" {
+		f, err := os.Open(file)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			err = f.Close()
+		}()
+		r = f
+		fname = filepath.Base(file)
+	} else {
+		r = stdin
+		fname = "stdin"
+	}
+	return g.CreateGist(ctx, fname, public, r, stdout)
 }
 
 func init() {
-	rootCmd.AddCommand(commitCmd)
-	commitCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
-	commitCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	commitCmd.Flags().StringVarP(&branch, "branch", "", "master", "branch")
-	commitCmd.Flags().StringVarP(&file, "file", "", "", "target file")
-	commitCmd.Flags().StringVarP(&path, "path", "", "", "commit path")
-	commitCmd.Flags().StringVarP(&message, "message", "", "commit by ghput", "commit message")
+	rootCmd.AddCommand(gistCmd)
+	gistCmd.Flags().StringVarP(&file, "file", "", "", "target file")
+	gistCmd.Flags().BoolVarP(&public, "public", "", false, "public gist")
 }
