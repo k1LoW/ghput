@@ -65,8 +65,7 @@ func runGist(stdin io.Reader, stdout io.Writer) (err error) {
 		return err
 	}
 	var (
-		r     io.Reader
-		fname string
+		r io.Reader
 	)
 	if file != "" {
 		f, err := os.Open(file)
@@ -77,16 +76,21 @@ func runGist(stdin io.Reader, stdout io.Writer) (err error) {
 			err = f.Close()
 		}()
 		r = f
-		fname = filepath.Base(file)
+		if filename == "" {
+			filename = filepath.Base(file)
+		}
 	} else {
 		r = stdin
-		fname = "stdin"
+		if filename == "" {
+			filename = "stdin"
+		}
 	}
-	return g.CreateGist(ctx, fname, public, r, stdout)
+	return g.CreateGist(ctx, filename, public, r, stdout)
 }
 
 func init() {
 	rootCmd.AddCommand(gistCmd)
 	gistCmd.Flags().StringVarP(&file, "file", "", "", "target file")
+	gistCmd.Flags().StringVarP(&filename, "filename", "", "", "filename")
 	gistCmd.Flags().BoolVarP(&public, "public", "", false, "public gist")
 }
