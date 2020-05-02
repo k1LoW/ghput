@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.5.1](https://github.com/k1LoW/ghput/compare/v0.5.0...v0.5.1) (2020-05-03)
+
+* Add `--filename` option [#10](https://github.com/k1LoW/ghput/pull/10) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.5.0](https://github.com/k1LoW/ghput/compare/v0.4.0...v0.5.0) (2020-05-02)
 
 * [BREAKING]Change footer key [#9](https://github.com/k1LoW/ghput/pull/9) ([k1LoW](https://github.com/k1LoW))
