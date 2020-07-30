@@ -132,27 +132,7 @@ func (g *Gh) DeleteCurrentIssueComment(ctx context.Context, n int) error {
 	return nil
 }
 
-func (g *Gh) CommitAndPush(ctx context.Context, branch, file, rPath, message string) error {
-	content := ""
-	if file != "" {
-		f, err := os.Stat(file)
-		if err != nil {
-			return err
-		}
-		if f.IsDir() {
-			return errors.New("'ghput commit' does not yet support directory commit.")
-		}
-		b, err := ioutil.ReadFile(filepath.Clean(file))
-		if err != nil {
-			return err
-		}
-		content = string(b)
-
-		if rPath == "" {
-			rPath = filepath.Base(file)
-		}
-	}
-
+func (g *Gh) CommitAndPush(ctx context.Context, branch, content, rPath, message string) error {
 	srv := g.client.Git
 
 	dRef, _, err := srv.GetRef(ctx, g.owner, g.repo, path.Join("heads", branch))
@@ -218,6 +198,28 @@ func (g *Gh) CommitAndPush(ctx context.Context, branch, file, rPath, message str
 	}
 
 	return nil
+}
+
+func (g *Gh) CommitAndPushFile(ctx context.Context, branch, file, rPath, message string) error {
+	content := ""
+	if file != "" {
+		f, err := os.Stat(file)
+		if err != nil {
+			return err
+		}
+		if f.IsDir() {
+			return errors.New("'ghput commit' does not yet support directory commit.")
+		}
+		b, err := ioutil.ReadFile(filepath.Clean(file))
+		if err != nil {
+			return err
+		}
+		content = string(b)
+		if rPath == "" {
+			rPath = filepath.Base(file)
+		}
+	}
+	return g.CommitAndPush(ctx, branch, content, rPath, message)
 }
 
 func (g *Gh) CreateGist(ctx context.Context, fname string, public bool, in io.Reader, out io.Writer) error {

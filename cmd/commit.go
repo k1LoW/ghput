@@ -58,7 +58,7 @@ func runCommit(stdin io.Reader, stdout io.Writer) error {
 	if err != nil {
 		return err
 	}
-	return g.CommitAndPush(ctx, branch, file, path, message)
+	return g.CommitAndPushFile(ctx, branch, file, path, message)
 }
 
 func init() {
