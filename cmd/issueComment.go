@@ -45,9 +45,6 @@ var issueCommentCmd = &cobra.Command{
 		if (fi.Mode() & os.ModeCharDevice) != 0 {
 			return errors.New("ghput need STDIN. Please use pipe")
 		}
-		if owner == "" || repo == "" || number == 0 {
-			return errors.New("`ghput issue-comment` need `--owner` AND `--repo` AND `--number` flag")
-		}
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -84,8 +81,20 @@ func runIssueComment(stdin io.Reader, stdout io.Writer) error {
 func init() {
 	rootCmd.AddCommand(issueCommentCmd)
 	issueCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
+	if err := issueCommentCmd.MarkFlagRequired("owner"); err != nil {
+		issueCommentCmd.PrintErrln(err)
+		os.Exit(1)
+	}
 	issueCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
+	if err := issueCommentCmd.MarkFlagRequired("repo"); err != nil {
+		issueCommentCmd.PrintErrln(err)
+		os.Exit(1)
+	}
 	issueCommentCmd.Flags().IntVarP(&number, "number", "", 0, "issue number")
+	if err := issueCommentCmd.MarkFlagRequired("number"); err != nil {
+		issueCommentCmd.PrintErrln(err)
+		os.Exit(1)
+	}
 	issueCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
 	issueCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
 	issueCommentCmd.Flags().StringVarP(&key, "key", "", "", "key for uniquely identifying the comment")
