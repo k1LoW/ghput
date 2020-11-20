@@ -34,6 +34,7 @@ var (
 	message  string
 	public   bool
 	filename string
+	title    string
 )
 
 // rootCmd represents the base command when called without any subcommands

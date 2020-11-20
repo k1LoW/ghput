@@ -16,6 +16,12 @@ $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput issue-comment 
 $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo myrepo --number 2
 ```
 
+**Put issue to repo:**
+
+``` console
+$ echo 'This is new isssue !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput issue --owner k1LoW --repo myrepo --title 'New Issue !!!!!'
+```
+
 **Put commit to branch:**
 
 ``` console
