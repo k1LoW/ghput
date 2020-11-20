@@ -32,11 +32,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// prCommentCmd represents the prComment command
-var prCommentCmd = &cobra.Command{
-	Use:   "pr-comment",
-	Short: "Put comment to pull request",
-	Long:  `Put comment to pull request.`,
+var issueCmd = &cobra.Command{
+	Use:   "issue",
+	Short: "Put new issue to repo",
+	Long:  `Put new issue to repo.`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		fi, err := os.Stdin.Stat()
 		if err != nil {
@@ -48,54 +47,45 @@ var prCommentCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return runPrComment(os.Stdin, os.Stdout)
+		return runIssue(os.Stdin, os.Stdout)
 	},
 }
 
-func runPrComment(stdin io.Reader, stdout io.Writer) error {
+func runIssue(stdin io.Reader, stdout io.Writer) error {
 	ctx := context.Background()
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
 		return err
 	}
-	b, err := g.IsPullRequest(ctx, number)
-	if err != nil {
-		return err
-	}
-	if !b {
-		return fmt.Errorf("#%d is not pull request", number)
-	}
 	comment, err := g.MakeComment(ctx, stdin, header, footer)
 	if err != nil {
 		return err
 	}
-	if err := g.DeleteCurrentIssueComment(ctx, number); err != nil {
+	n, err := g.PutIssue(ctx, title, comment)
+	if err != nil {
 		return err
 	}
-	if err := g.PutIssueComment(ctx, number, comment); err != nil {
-		return err
-	}
+	_, _ = fmt.Fprintf(stdout, "%d\n", n)
 	return nil
 }
 
 func init() {
-	rootCmd.AddCommand(prCommentCmd)
-	prCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
-	if err := prCommentCmd.MarkFlagRequired("owner"); err != nil {
-		prCommentCmd.PrintErrln(err)
+	rootCmd.AddCommand(issueCmd)
+	issueCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
+	if err := issueCmd.MarkFlagRequired("owner"); err != nil {
+		issueCmd.PrintErrln(err)
 		os.Exit(1)
 	}
-	prCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	if err := prCommentCmd.MarkFlagRequired("repo"); err != nil {
-		prCommentCmd.PrintErrln(err)
+	issueCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
+	if err := issueCmd.MarkFlagRequired("repo"); err != nil {
+		issueCmd.PrintErrln(err)
 		os.Exit(1)
 	}
-	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
-	if err := prCommentCmd.MarkFlagRequired("number"); err != nil {
-		prCommentCmd.PrintErrln(err)
+	issueCmd.Flags().StringVarP(&title, "title", "", "", "issue title")
+	if err := issueCmd.MarkFlagRequired("title"); err != nil {
+		issueCmd.PrintErrln(err)
 		os.Exit(1)
 	}
-	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
-	prCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
-	prCommentCmd.Flags().StringVarP(&key, "key", "", "", "key for uniquely identifying the comment")
+	issueCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
+	issueCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
 }

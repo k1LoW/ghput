@@ -23,7 +23,6 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"io"
 	"os"
 
@@ -36,12 +35,6 @@ var commitCmd = &cobra.Command{
 	Use:   "commit",
 	Short: "Put commit to branch",
 	Long:  `Put commit to branch.`,
-	Args: func(cmd *cobra.Command, args []string) error {
-		if owner == "" || repo == "" || branch == "" {
-			return errors.New("`ghput commit` need `--owner` AND `--repo` AND `--branch` flag")
-		}
-		return nil
-	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runCommit(os.Stdin, os.Stdout)
 	},
@@ -59,8 +52,20 @@ func runCommit(stdin io.Reader, stdout io.Writer) error {
 func init() {
 	rootCmd.AddCommand(commitCmd)
 	commitCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
+	if err := commitCmd.MarkFlagRequired("owner"); err != nil {
+		commitCmd.PrintErrln(err)
+		os.Exit(1)
+	}
 	commitCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
+	if err := commitCmd.MarkFlagRequired("repo"); err != nil {
+		commitCmd.PrintErrln(err)
+		os.Exit(1)
+	}
 	commitCmd.Flags().StringVarP(&branch, "branch", "", "master", "branch")
+	if err := commitCmd.MarkFlagRequired("branch"); err != nil {
+		commitCmd.PrintErrln(err)
+		os.Exit(1)
+	}
 	commitCmd.Flags().StringVarP(&file, "file", "", "", "target file")
 	commitCmd.Flags().StringVarP(&path, "path", "", "", "commit path")
 	commitCmd.Flags().StringVarP(&message, "message", "", "commit by ghput", "commit message")
