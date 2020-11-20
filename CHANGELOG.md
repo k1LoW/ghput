@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.6.0](https://github.com/k1LoW/ghput/compare/v0.5.2...v0.6.0) (2020-11-20)
+
+* Add `ghput issue` [#13](https://github.com/k1LoW/ghput/pull/13) ([k1LoW](https://github.com/k1LoW))
+* Bump up go and pkg version [#12](https://github.com/k1LoW/ghput/pull/12) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.5.2](https://github.com/k1LoW/ghput/compare/v0.5.1...v0.5.2) (2020-07-31)
 
 * Refactor code [#11](https://github.com/k1LoW/ghput/pull/11) ([k1LoW](https://github.com/k1LoW))

@@ -11,6 +11,8 @@ builds:
     - CGO_ENABLED=0
   goos:
     - linux
+  goarch:
+    - amd64
   ldflags:
     - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
 -
@@ -19,6 +21,8 @@ builds:
     - CGO_ENABLED=0
   goos:
     - darwin
+  goarch:
+    - amd64
   ldflags:
     - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
 archives:
