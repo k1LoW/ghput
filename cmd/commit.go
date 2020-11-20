@@ -24,7 +24,6 @@ package cmd
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"os"
 
@@ -43,12 +42,8 @@ var commitCmd = &cobra.Command{
 		}
 		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		err := runCommit(os.Stdin, os.Stdout)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Error: %s\n", err)
-			os.Exit(1)
-		}
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return runCommit(os.Stdin, os.Stdout)
 	},
 }
 

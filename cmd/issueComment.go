@@ -40,8 +40,7 @@ var issueCommentCmd = &cobra.Command{
 	Args: func(cmd *cobra.Command, args []string) error {
 		fi, err := os.Stdin.Stat()
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
-			os.Exit(1)
+			return err
 		}
 		if (fi.Mode() & os.ModeCharDevice) != 0 {
 			return errors.New("ghput need STDIN. Please use pipe")
@@ -51,12 +50,8 @@ var issueCommentCmd = &cobra.Command{
 		}
 		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		err := runIssueComment(os.Stdin, os.Stdout)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Error: %s\n", err)
-			os.Exit(1)
-		}
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return runIssueComment(os.Stdin, os.Stdout)
 	},
 }
 

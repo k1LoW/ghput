@@ -53,7 +53,7 @@ ghput completion zsh > $fpath[1]/_ghput
 		}
 		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var (
 			o   *os.File
 			err error
@@ -64,8 +64,7 @@ ghput completion zsh > $fpath[1]/_ghput
 		} else {
 			o, err = os.Create(out)
 			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
-				os.Exit(1)
+				return err
 			}
 		}
 
@@ -73,20 +72,18 @@ ghput completion zsh > $fpath[1]/_ghput
 		case "bash":
 			if err := rootCmd.GenBashCompletion(o); err != nil {
 				_ = o.Close()
-				_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
-				os.Exit(1)
+				return err
 			}
 		case "zsh":
 			if err := rootCmd.GenZshCompletion(o); err != nil {
 				_ = o.Close()
-				_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
-				os.Exit(1)
+				return err
 			}
 		}
 		if err := o.Close(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
-			os.Exit(1)
+			return err
 		}
+		return nil
 	},
 }
 

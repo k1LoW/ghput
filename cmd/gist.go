@@ -24,7 +24,6 @@ package cmd
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -41,20 +40,15 @@ var gistCmd = &cobra.Command{
 	Args: func(cmd *cobra.Command, args []string) error {
 		fi, err := os.Stdin.Stat()
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
-			os.Exit(1)
+			return err
 		}
 		if (fi.Mode()&os.ModeCharDevice) != 0 && file == "" {
 			return errors.New("`ghput gist` need `--file` OR STDIN")
 		}
 		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		err := runGist(os.Stdin, os.Stdout)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Error: %s\n", err)
-			os.Exit(1)
-		}
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return runGist(os.Stdin, os.Stdout)
 	},
 }
 
