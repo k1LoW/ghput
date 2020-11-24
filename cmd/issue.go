@@ -61,7 +61,7 @@ func runIssue(stdin io.Reader, stdout io.Writer) error {
 	if err != nil {
 		return err
 	}
-	n, err := g.CreateIssue(ctx, title, comment)
+	n, err := g.CreateIssue(ctx, title, comment, assignees)
 	if err != nil {
 		return err
 	}
@@ -88,4 +88,5 @@ func init() {
 	}
 	issueCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
 	issueCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
+	issueCmd.Flags().StringSliceVarP(&assignees, "assignee", "a", []string{}, "issue assignee")
 }

@@ -107,8 +107,21 @@ func (g Gh) IsIssue(ctx context.Context, n int) (bool, error) {
 	return !b, nil
 }
 
-func (g *Gh) CreateIssue(ctx context.Context, title string, comment string) (int, error) {
-	r := &github.IssueRequest{Title: &title, Body: &comment}
+func (g *Gh) CreateIssue(ctx context.Context, title string, comment string, assignees []string) (int, error) {
+	// trim assignees
+	as := []string{}
+	for _, a := range assignees {
+		splitted := strings.Split(a, " ")
+		for _, s := range splitted {
+			if s == "" {
+				continue
+			}
+			as = append(as, strings.Trim(s, "@"))
+		}
+	}
+	as = unique(as)
+
+	r := &github.IssueRequest{Title: &title, Body: &comment, Assignees: &as}
 	i, _, err := g.client.Issues.Create(ctx, g.owner, g.repo, r)
 	if err != nil {
 		return 0, err
@@ -307,4 +320,16 @@ func getStdin(ctx context.Context, stdin io.Reader) (string, error) {
 		}
 	}
 	return out.String(), nil
+}
+
+func unique(in []string) []string {
+	m := map[string]struct{}{}
+	for _, s := range in {
+		m[s] = struct{}{}
+	}
+	u := []string{}
+	for s := range m {
+		u = append(u, s)
+	}
+	return u
 }
