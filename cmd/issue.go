@@ -61,7 +61,7 @@ func runIssue(stdin io.Reader, stdout io.Writer) error {
 	if err != nil {
 		return err
 	}
-	n, err := g.PutIssue(ctx, title, comment)
+	n, err := g.CreateIssue(ctx, title, comment)
 	if err != nil {
 		return err
 	}

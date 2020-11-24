@@ -107,7 +107,7 @@ func (g Gh) IsIssue(ctx context.Context, n int) (bool, error) {
 	return !b, nil
 }
 
-func (g *Gh) PutIssue(ctx context.Context, title string, comment string) (int, error) {
+func (g *Gh) CreateIssue(ctx context.Context, title string, comment string) (int, error) {
 	r := &github.IssueRequest{Title: &title, Body: &comment}
 	i, _, err := g.client.Issues.Create(ctx, g.owner, g.repo, r)
 	if err != nil {
