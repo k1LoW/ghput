@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v33/github"
 	"github.com/mattn/go-colorable"
 )
 
@@ -116,6 +116,7 @@ func (g *Gh) CreateIssue(ctx context.Context, title string, comment string, assi
 			if s == "" {
 				continue
 			}
+
 			as = append(as, strings.Trim(s, "@"))
 		}
 	}
@@ -181,14 +182,14 @@ func (g *Gh) CommitAndPush(ctx context.Context, branch, content, rPath, message 
 			return err
 		}
 
-		entry := github.TreeEntry{
+		entry := &github.TreeEntry{
 			Path: github.String(rPath),
 			Mode: github.String("100644"),
 			Type: github.String("blob"),
 			SHA:  resB.SHA,
 		}
 
-		entries := []github.TreeEntry{entry}
+		entries := []*github.TreeEntry{entry}
 
 		tree, _, err = srv.CreateTree(ctx, g.owner, g.repo, *dRef.Object.SHA, entries)
 		if err != nil {
@@ -201,7 +202,7 @@ func (g *Gh) CommitAndPush(ctx context.Context, branch, content, rPath, message 
 	commit := &github.Commit{
 		Message: github.String(message),
 		Tree:    tree,
-		Parents: []github.Commit{*parent},
+		Parents: []*github.Commit{parent},
 	}
 	resC, _, err := srv.CreateCommit(ctx, g.owner, g.repo, commit)
 	if err != nil {
