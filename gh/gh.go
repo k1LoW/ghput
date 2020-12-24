@@ -116,8 +116,22 @@ func (g *Gh) CreateIssue(ctx context.Context, title string, comment string, assi
 			if s == "" {
 				continue
 			}
-
-			as = append(as, strings.Trim(s, "@"))
+			trimed := strings.Trim(s, "@")
+			if !strings.Contains(trimed, "/") {
+				as = append(as, trimed)
+				continue
+			}
+			splitted := strings.Split(trimed, "/")
+			org := splitted[0]
+			slug := splitted[1]
+			opts := &github.TeamListTeamMembersOptions{}
+			users, _, err := g.client.Teams.ListTeamMembersBySlug(ctx, org, slug, opts)
+			if err != nil {
+				return 0, err
+			}
+			for _, u := range users {
+				as = append(as, *u.Login)
+			}
 		}
 	}
 	as = unique(as)
