@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.7.0](https://github.com/k1LoW/ghput/compare/v0.6.1...v0.7.0) (2020-12-24)
+
+* Support assigning team members [#15](https://github.com/k1LoW/ghput/pull/15) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.6.1](https://github.com/k1LoW/ghput/compare/v0.6.0...v0.6.1) (2020-11-24)
 
 * Support assignees ( `ghput issue` ) [#14](https://github.com/k1LoW/ghput/pull/14) ([k1LoW](https://github.com/k1LoW))

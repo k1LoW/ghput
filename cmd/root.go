@@ -40,9 +40,10 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "ghput",
-	Short: "ghput is a CI-friendly tool that puts * on GitHub.",
-	Long:  `ghput is a CI-friendly tool that puts * on GitHub.`,
+	Use:          "ghput",
+	Short:        "ghput is a CI-friendly tool that puts * on GitHub.",
+	Long:         `ghput is a CI-friendly tool that puts * on GitHub.`,
+	SilenceUsage: true,
 }
 
 func Execute() {
