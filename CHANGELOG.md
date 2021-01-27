@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.8.0](https://github.com/k1LoW/ghput/compare/v0.7.0...v0.8.0) (2021-01-27)
+
+* Add --close-issues-using-title to close current issues [#17](https://github.com/k1LoW/ghput/pull/17) ([k1LoW](https://github.com/k1LoW))
+* Silence usage [#16](https://github.com/k1LoW/ghput/pull/16) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.7.0](https://github.com/k1LoW/ghput/compare/v0.6.1...v0.7.0) (2020-12-24)
 
 * Support assigning team members [#15](https://github.com/k1LoW/ghput/pull/15) ([k1LoW](https://github.com/k1LoW))
