@@ -286,6 +286,36 @@ func (g *Gh) CreateGist(ctx context.Context, fname string, public bool, in io.Re
 	return nil
 }
 
+func (g *Gh) CloseIssuesUsingTitle(ctx context.Context, closeTitle string, ignoreNumber int) error {
+	if closeTitle == "" {
+		return nil
+	}
+	opts := &github.SearchOptions{
+		ListOptions: github.ListOptions{
+			PerPage: 100,
+		},
+	}
+	r, _, err := g.client.Search.Issues(ctx, fmt.Sprintf("%s state:open type:issue in:title repo:%s/%s", closeTitle, g.owner, g.repo), opts)
+	if err != nil {
+		return err
+	}
+	for _, i := range r.Issues {
+		if *i.Number == ignoreNumber {
+			continue
+		}
+		if err := g.PutIssueComment(ctx, *i.Number, fmt.Sprintf("Closed when ghput created #%d.", ignoreNumber)); err != nil {
+			return err
+		}
+		closed := "closed"
+		if _, _, err := g.client.Issues.Edit(ctx, g.owner, g.repo, *i.Number, &github.IssueRequest{
+			State: &closed,
+		}); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 type roundTripper struct {
 	transport   *http.Transport
 	accessToken string

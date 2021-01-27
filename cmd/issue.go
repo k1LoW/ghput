@@ -65,6 +65,9 @@ func runIssue(stdin io.Reader, stdout io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if err := g.CloseIssuesUsingTitle(ctx, closeTitle, n); err != nil {
+		return err
+	}
 	_, _ = fmt.Fprintf(stdout, "%d\n", n)
 	return nil
 }
@@ -89,4 +92,5 @@ func init() {
 	issueCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
 	issueCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
 	issueCmd.Flags().StringSliceVarP(&assignees, "assignee", "a", []string{}, "issue assignee")
+	issueCmd.Flags().StringVarP(&closeTitle, "close-issues-using-title", "", "", "close current open issues using title match")
 }
