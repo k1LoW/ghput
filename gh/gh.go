@@ -303,12 +303,13 @@ func (g *Gh) CloseIssuesUsingTitleMatch(ctx context.Context, closeTitle string, 
 		if *i.Number == ignoreNumber {
 			continue
 		}
-		g.PutIssueComment(ctx, *i.Number, fmt.Sprintf("Closed when ghput created #%d.", ignoreNumber))
+		if err := g.PutIssueComment(ctx, *i.Number, fmt.Sprintf("Closed when ghput created #%d.", ignoreNumber)); err != nil {
+			return err
+		}
 		closed := "closed"
-		_, _, err := g.client.Issues.Edit(ctx, g.owner, g.repo, *i.Number, &github.IssueRequest{
+		if _, _, err := g.client.Issues.Edit(ctx, g.owner, g.repo, *i.Number, &github.IssueRequest{
 			State: &closed,
-		})
-		if err != nil {
+		}); err != nil {
 			return err
 		}
 	}
