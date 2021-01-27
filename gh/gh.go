@@ -286,7 +286,7 @@ func (g *Gh) CreateGist(ctx context.Context, fname string, public bool, in io.Re
 	return nil
 }
 
-func (g *Gh) CloseIssuesUsingTitleMatch(ctx context.Context, closeTitle string, ignoreNumber int) error {
+func (g *Gh) CloseIssuesUsingTitle(ctx context.Context, closeTitle string, ignoreNumber int) error {
 	if closeTitle == "" {
 		return nil
 	}
