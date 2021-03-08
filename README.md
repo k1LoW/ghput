@@ -41,7 +41,7 @@ $ cat file.txt | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput gist
 **Use on GitHub Enterprise:**
 
 ``` console
-$ export GITHUB_BASE_URL=https://git.my-company.com/api/v3/
+$ export GITHUB_API_URL=https://git.my-company.com/api/v3/
 ```
 
 ## Install

@@ -37,7 +37,13 @@ type Gh struct {
 // New return Gh
 func New(owner, repo, key string) (*Gh, error) {
 	c := github.NewClient(httpClient())
-	if baseURL := os.Getenv("GITHUB_BASE_URL"); baseURL != "" {
+	baseURL := os.Getenv("GITHUB_BASE_URL")
+	if baseURL == "" {
+		baseURL = os.Getenv("GITHUB_API_URL")
+	} else {
+		_, _ = fmt.Fprintf(os.Stderr, "%s\n", "env GITHUB_BASE_URL is deprecated. Use GITHUB_API_URL")
+	}
+	if baseURL != "" {
 		baseEndpoint, err := url.Parse(baseURL)
 		if err != nil {
 			return nil, err
