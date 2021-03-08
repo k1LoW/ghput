@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.9.0](https://github.com/k1LoW/ghput/compare/v0.8.0...v0.9.0) (2021-03-08)
+
+* Support GITHUB_API_URL ( GITHUB_BASE_URL is deprecated ) [#18](https://github.com/k1LoW/ghput/pull/18) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.8.0](https://github.com/k1LoW/ghput/compare/v0.7.0...v0.8.0) (2021-01-27)
 
 * Add --close-issues-using-title to close current issues [#17](https://github.com/k1LoW/ghput/pull/17) ([k1LoW](https://github.com/k1LoW))

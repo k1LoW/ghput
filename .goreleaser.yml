@@ -47,8 +47,8 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - 'ghcr.io/k1low/ghdag:v{{ .Version }}'
-      - 'ghcr.io/k1low/ghdag:latest'
+      - 'ghcr.io/k1low/ghput:v{{ .Version }}'
+      - 'ghcr.io/k1low/ghput:latest'
     dockerfile: Dockerfile
     build_flag_templates:
       - "--pull"
