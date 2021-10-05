@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.10.0](https://github.com/k1LoW/ghput/compare/v0.9.0...v0.10.0) (2021-10-06)
+
+* Put comment to latest merged pull request ( Add `--latest-merged` ) [#19](https://github.com/k1LoW/ghput/pull/19) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.9.0](https://github.com/k1LoW/ghput/compare/v0.8.0...v0.9.0) (2021-03-08)
 
 * Support GITHUB_API_URL ( GITHUB_BASE_URL is deprecated ) [#18](https://github.com/k1LoW/ghput/pull/18) ([k1LoW](https://github.com/k1LoW))
