@@ -27,6 +27,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/k1LoW/ghput/gh"
 	"github.com/spf13/cobra"
@@ -38,6 +39,16 @@ var prCommentCmd = &cobra.Command{
 	Short: "Put comment to pull request",
 	Long:  `Put comment to pull request.`,
 	Args: func(cmd *cobra.Command, args []string) error {
+		if owner == "" && repo == "" && os.Getenv("GITHUB_REPOSITORY") != "" {
+			splitted := strings.Split(os.Getenv("GITHUB_REPOSITORY"), "/")
+			if len(splitted) == 2 {
+				owner = splitted[0]
+				repo = splitted[1]
+			}
+		}
+		if owner == "" || repo == "" {
+			return errors.New("--owner and --repo are not set")
+		}
 		if number > 0 && latestMerged {
 			return errors.New("specify one of --number and --latest-merged")
 		}
@@ -93,15 +104,7 @@ func runPrComment(stdin io.Reader, stdout io.Writer) error {
 func init() {
 	rootCmd.AddCommand(prCommentCmd)
 	prCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
-	if err := prCommentCmd.MarkFlagRequired("owner"); err != nil {
-		prCommentCmd.PrintErrln(err)
-		os.Exit(1)
-	}
 	prCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	if err := prCommentCmd.MarkFlagRequired("repo"); err != nil {
-		prCommentCmd.PrintErrln(err)
-		os.Exit(1)
-	}
 	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
 	prCommentCmd.Flags().BoolVarP(&latestMerged, "latest-merged", "", false, "latest merged pull request")
 	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
