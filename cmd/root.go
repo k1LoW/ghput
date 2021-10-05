@@ -22,21 +22,22 @@ import (
 )
 
 var (
-	owner      string
-	repo       string
-	number     int
-	header     string
-	footer     string
-	key        string
-	branch     string
-	file       string
-	path       string
-	message    string
-	public     bool
-	filename   string
-	title      string
-	assignees  []string
-	closeTitle string
+	owner        string
+	repo         string
+	number       int
+	header       string
+	footer       string
+	key          string
+	branch       string
+	file         string
+	path         string
+	message      string
+	public       bool
+	filename     string
+	title        string
+	assignees    []string
+	closeTitle   string
+	latestMerged bool
 )
 
 // rootCmd represents the base command when called without any subcommands
