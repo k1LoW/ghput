@@ -16,6 +16,12 @@ $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput issue-comment 
 $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo myrepo --number 2
 ```
 
+**Put comment to latest merged pull request:**
+
+``` console
+$ echo 'Hello merged pull request !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput pr-comment --owner k1LoW --repo myrepo --latest-merged
+```
+
 **Put issue to repo:**
 
 ``` console

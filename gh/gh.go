@@ -14,6 +14,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -95,6 +96,49 @@ func (g *Gh) CommentFooter() string {
 	}
 	key := fmt.Sprintf("[key:%s] ", g.key)
 	return fmt.Sprintf(footerFormat, key)
+}
+
+func (g *Gh) FetchLatestMergedPullRequest(ctx context.Context) (int, error) {
+	commits, _, err := g.client.Repositories.ListCommits(ctx, g.owner, g.repo, &github.CommitsListOptions{
+		ListOptions: github.ListOptions{
+			Page:    1,
+			PerPage: 100,
+		},
+	})
+	if err != nil {
+		return 0, err
+	}
+	for _, c := range commits {
+		m := c.GetCommit().GetMessage()
+		if strings.HasPrefix(m, "Merge pull request #") {
+			splitted := strings.Split(strings.TrimPrefix(m, "Merge pull request #"), " ")
+			if len(splitted) < 1 {
+				break
+			}
+			n, err := strconv.Atoi(splitted[0])
+			if err != nil {
+				break
+			}
+			return n, nil
+		}
+	}
+	// fallback
+	q := fmt.Sprintf("type:pr is:merged sort:updated-desc repo:%s/%s", g.owner, g.repo)
+	prs, _, err := g.client.Search.Issues(ctx, q, &github.SearchOptions{
+		Sort:  "updated",
+		Order: "desc",
+		ListOptions: github.ListOptions{
+			Page:    1,
+			PerPage: 1,
+		},
+	})
+	if err != nil {
+		return 0, err
+	}
+	if len(prs.Issues) == 0 {
+		return 0, err
+	}
+	return prs.Issues[0].GetNumber(), nil
 }
 
 func (g Gh) IsPullRequest(ctx context.Context, n int) (bool, error) {

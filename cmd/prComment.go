@@ -38,6 +38,12 @@ var prCommentCmd = &cobra.Command{
 	Short: "Put comment to pull request",
 	Long:  `Put comment to pull request.`,
 	Args: func(cmd *cobra.Command, args []string) error {
+		if number > 0 && latestMerged {
+			return errors.New("specify one of --number and --latest-merged")
+		}
+		if number == 0 && !latestMerged {
+			return errors.New("specify one of --number and --latest-merged")
+		}
 		fi, err := os.Stdin.Stat()
 		if err != nil {
 			return err
@@ -57,6 +63,12 @@ func runPrComment(stdin io.Reader, stdout io.Writer) error {
 	g, err := gh.New(owner, repo, key)
 	if err != nil {
 		return err
+	}
+	if latestMerged {
+		number, err = g.FetchLatestMergedPullRequest(ctx)
+		if err != nil {
+			return err
+		}
 	}
 	b, err := g.IsPullRequest(ctx, number)
 	if err != nil {
@@ -91,10 +103,7 @@ func init() {
 		os.Exit(1)
 	}
 	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
-	if err := prCommentCmd.MarkFlagRequired("number"); err != nil {
-		prCommentCmd.PrintErrln(err)
-		os.Exit(1)
-	}
+	prCommentCmd.Flags().BoolVarP(&latestMerged, "latest-merged", "", false, "latest merged pull request")
 	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
 	prCommentCmd.Flags().StringVarP(&footer, "footer", "", "", "comment footer")
 	prCommentCmd.Flags().StringVarP(&key, "key", "", "", "key for uniquely identifying the comment")
