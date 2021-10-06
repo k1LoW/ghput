@@ -62,6 +62,19 @@ func runTag(stdin io.Reader, stdout io.Writer) error {
 		return err
 	}
 	if release {
+		if releaseBody == "" {
+			fi, err := os.Stdin.Stat()
+			if err != nil {
+				return err
+			}
+			if (fi.Mode() & os.ModeCharDevice) == 0 {
+				c, err := getStdin(ctx, stdin)
+				if err != nil {
+					return err
+				}
+				releaseBody = string(c)
+			}
+		}
 		if err := g.CreateRelease(ctx, tag, releaseTitle, releaseBody); err != nil {
 			return err
 		}
