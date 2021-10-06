@@ -25,7 +25,9 @@ import (
 	"context"
 	"io"
 	"os"
+	"time"
 
+	"github.com/itchyny/timefmt-go"
 	"github.com/k1LoW/ghput/gh"
 	"github.com/spf13/cobra"
 )
@@ -58,6 +60,9 @@ func runTag(stdin io.Reader, stdout io.Writer) error {
 			return err
 		}
 	}
+	if tag == "" {
+		tag = timefmt.Format(time.Now(), tagTimeFormat)
+	}
 	if err := g.CreateTag(ctx, branch, tag); err != nil {
 		return err
 	}
@@ -88,6 +93,7 @@ func init() {
 	tagCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
 	tagCmd.Flags().StringVarP(&branch, "branch", "", "", "branch (default: default branch of repository)")
 	tagCmd.Flags().StringVarP(&tag, "tag", "", "", "tag")
+	tagCmd.Flags().StringVarP(&tagTimeFormat, "tag-time-format", "", "%Y%m%d-%H%M%S%z", "time format of tag")
 
 	tagCmd.Flags().BoolVarP(&release, "release", "", false, "create a tag as a release.")
 	tagCmd.Flags().StringVarP(&releaseTitle, "release-title", "", "", "release title")
