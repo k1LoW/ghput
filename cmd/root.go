@@ -41,6 +41,9 @@ var (
 	closeTitle   string
 	latestMerged bool
 	tag          string
+	release      bool
+	releaseTitle string
+	releaseBody  string
 )
 
 // rootCmd represents the base command when called without any subcommands

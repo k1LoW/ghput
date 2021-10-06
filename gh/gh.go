@@ -389,6 +389,17 @@ func (g *Gh) CreateTag(ctx context.Context, branch, tag string) error {
 	return nil
 }
 
+func (g *Gh) CreateRelease(ctx context.Context, tag, title, body string) error {
+	if _, _, err := g.client.Repositories.CreateRelease(ctx, g.owner, g.repo, &github.RepositoryRelease{
+		TagName: &tag,
+		Name:    &title,
+		Body:    &body,
+	}); err != nil {
+		return err
+	}
+	return nil
+}
+
 type roundTripper struct {
 	transport   *http.Transport
 	accessToken string

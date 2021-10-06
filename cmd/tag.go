@@ -58,7 +58,15 @@ func runTag(stdin io.Reader, stdout io.Writer) error {
 			return err
 		}
 	}
-	return g.CreateTag(ctx, branch, tag)
+	if err := g.CreateTag(ctx, branch, tag); err != nil {
+		return err
+	}
+	if release {
+		if err := g.CreateRelease(ctx, tag, releaseTitle, releaseBody); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func init() {
@@ -67,4 +75,8 @@ func init() {
 	tagCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
 	tagCmd.Flags().StringVarP(&branch, "branch", "", "", "branch (default: default branch of repository)")
 	tagCmd.Flags().StringVarP(&tag, "tag", "", "", "tag")
+
+	tagCmd.Flags().BoolVarP(&release, "release", "", false, "create a tag as a release.")
+	tagCmd.Flags().StringVarP(&releaseTitle, "release-title", "", "", "release title")
+	tagCmd.Flags().StringVarP(&releaseBody, "release-body", "", "", "release body")
 }

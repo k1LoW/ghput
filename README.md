@@ -52,6 +52,13 @@ $ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branc
 $ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput tag --owner k1LoW --repo myrepo --branch main --tag v0.0.1
 ```
 
+**Put tag as release:**
+
+
+``` console
+$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput tag --owner k1LoW --repo myrepo --tag v0.0.1 --release --release-title 'Code name: Elvis Juice' --release-body 'Release !!'
+```
+
 **Put file to Gist:**
 
 ``` console
