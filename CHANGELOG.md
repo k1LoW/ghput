@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.12.0](https://github.com/k1LoW/ghput/compare/v0.11.0...v0.12.0) (2021-10-06)
+
+* Put a time based tag when `--tag` option is omitted. [#25](https://github.com/k1LoW/ghput/pull/25) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.11.0](https://github.com/k1LoW/ghput/compare/v0.10.0...v0.11.0) (2021-10-06)
 
 * Add `--release` option [#24](https://github.com/k1LoW/ghput/pull/24) ([k1LoW](https://github.com/k1LoW))
