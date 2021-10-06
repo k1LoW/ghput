@@ -52,6 +52,12 @@ func runCommit(stdin io.Reader, stdout io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if branch == "" {
+		branch, err = g.GetDefaultBranch(ctx)
+		if err != nil {
+			return err
+		}
+	}
 	return g.CommitAndPushFile(ctx, branch, file, path, message)
 }
 
@@ -59,11 +65,7 @@ func init() {
 	rootCmd.AddCommand(commitCmd)
 	commitCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
 	commitCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	commitCmd.Flags().StringVarP(&branch, "branch", "", "master", "branch")
-	if err := commitCmd.MarkFlagRequired("branch"); err != nil {
-		commitCmd.PrintErrln(err)
-		os.Exit(1)
-	}
+	commitCmd.Flags().StringVarP(&branch, "branch", "", "", "branch (default: default branch of repository)")
 	commitCmd.Flags().StringVarP(&file, "file", "", "", "target file")
 	commitCmd.Flags().StringVarP(&path, "path", "", "", "commit path")
 	commitCmd.Flags().StringVarP(&message, "message", "", "commit by ghput", "commit message")
