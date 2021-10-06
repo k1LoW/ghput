@@ -42,7 +42,14 @@ $ echo 'This is new isssue !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput issue --own
 **Put commit to branch:**
 
 ``` console
-$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branch master --file file.txt --path path/to/file.txt --message 'Commit file !!'
+$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branch main --file file.txt --path path/to/file.txt --message 'Commit file !!'
+```
+
+**Put tag to branch:**
+
+
+``` console
+$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput tag --owner k1LoW --repo myrepo --branch main --tag v0.0.1
 ```
 
 **Put file to Gist:**

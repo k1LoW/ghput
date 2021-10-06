@@ -141,6 +141,14 @@ func (g *Gh) FetchLatestMergedPullRequest(ctx context.Context) (int, error) {
 	return prs.Issues[0].GetNumber(), nil
 }
 
+func (g *Gh) GetDefaultBranch(ctx context.Context) (string, error) {
+	r, _, err := g.client.Repositories.Get(ctx, g.owner, g.repo)
+	if err != nil {
+		return "", err
+	}
+	return r.GetDefaultBranch(), nil
+}
+
 func (g Gh) IsPullRequest(ctx context.Context, n int) (bool, error) {
 	i, _, err := g.client.Issues.Get(ctx, g.owner, g.repo, n)
 	if err != nil {
@@ -362,6 +370,21 @@ func (g *Gh) CloseIssuesUsingTitle(ctx context.Context, closeTitle string, ignor
 		}); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+func (g *Gh) CreateTag(ctx context.Context, branch, tag string) error {
+	ref, _, err := g.client.Git.GetRef(ctx, g.owner, g.repo, path.Join("heads", branch))
+	if err != nil {
+		return err
+	}
+	tref := fmt.Sprintf("refs/tags/%s", tag)
+	if _, _, err := g.client.Git.CreateRef(ctx, g.owner, g.repo, &github.Reference{
+		Ref:    &tref,
+		Object: ref.GetObject(),
+	}); err != nil {
+		return err
 	}
 	return nil
 }
