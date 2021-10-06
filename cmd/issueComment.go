@@ -68,7 +68,12 @@ func runIssueComment(stdin io.Reader, stdout io.Writer) error {
 	if !b {
 		return fmt.Errorf("#%d is not issue", number)
 	}
-	comment, err := g.MakeComment(ctx, stdin, header, footer)
+	c, err := getStdin(ctx, stdin)
+	if err != nil {
+		return err
+	}
+	body := string(c)
+	comment, err := g.MakeComment(ctx, body, header, footer)
 	if err != nil {
 		return err
 	}

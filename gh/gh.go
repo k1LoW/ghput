@@ -1,8 +1,6 @@
 package gh
 
 import (
-	"bufio"
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -19,7 +17,6 @@ import (
 	"time"
 
 	"github.com/google/go-github/v39/github"
-	"github.com/mattn/go-colorable"
 )
 
 const (
@@ -72,12 +69,7 @@ func New(owner, repo, key string) (*Gh, error) {
 	}, nil
 }
 
-func (g *Gh) MakeComment(ctx context.Context, stdin io.Reader, header, footer string) (string, error) {
-	c, err := getStdin(ctx, stdin)
-	if err != nil {
-		return "", err
-	}
-	body := string(c)
+func (g *Gh) MakeComment(ctx context.Context, body, header, footer string) (string, error) {
 	if body != "" && !strings.HasSuffix(body, "\n") {
 		body += "\n"
 	}
@@ -425,30 +417,6 @@ func httpClient() *http.Client {
 		Timeout:   time.Second * 10,
 		Transport: rt,
 	}
-}
-
-func getStdin(ctx context.Context, stdin io.Reader) (string, error) {
-	in := bufio.NewReader(stdin)
-	out := new(bytes.Buffer)
-	nc := colorable.NewNonColorable(out)
-	for {
-		s, err := in.ReadBytes('\n')
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			return "", err
-		}
-		select {
-		case <-ctx.Done():
-			break
-		default:
-			_, err = nc.Write(s)
-			if err != nil {
-				return "", err
-			}
-		}
-	}
-	return out.String(), nil
 }
 
 func unique(in []string) []string {

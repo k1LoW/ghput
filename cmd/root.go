@@ -16,10 +16,15 @@ limitations under the License.
 package cmd
 
 import (
+	"bufio"
+	"bytes"
+	"context"
 	"errors"
+	"io"
 	"os"
 	"strings"
 
+	"github.com/mattn/go-colorable"
 	"github.com/spf13/cobra"
 )
 
@@ -72,4 +77,28 @@ func setOwnerRepo() error {
 		return errors.New("--owner and --repo are not set")
 	}
 	return nil
+}
+
+func getStdin(ctx context.Context, stdin io.Reader) (string, error) {
+	in := bufio.NewReader(stdin)
+	out := new(bytes.Buffer)
+	nc := colorable.NewNonColorable(out)
+	for {
+		s, err := in.ReadBytes('\n')
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return "", err
+		}
+		select {
+		case <-ctx.Done():
+			break
+		default:
+			_, err = nc.Write(s)
+			if err != nil {
+				return "", err
+			}
+		}
+	}
+	return out.String(), nil
 }
