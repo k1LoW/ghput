@@ -38,6 +38,9 @@ var issueCommentCmd = &cobra.Command{
 	Short: "Put comment to issue",
 	Long:  `Put comment to issue.`,
 	Args: func(cmd *cobra.Command, args []string) error {
+		if err := setOwnerRepo(); err != nil {
+			return err
+		}
 		fi, err := os.Stdin.Stat()
 		if err != nil {
 			return err
@@ -81,15 +84,7 @@ func runIssueComment(stdin io.Reader, stdout io.Writer) error {
 func init() {
 	rootCmd.AddCommand(issueCommentCmd)
 	issueCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
-	if err := issueCommentCmd.MarkFlagRequired("owner"); err != nil {
-		issueCommentCmd.PrintErrln(err)
-		os.Exit(1)
-	}
 	issueCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	if err := issueCommentCmd.MarkFlagRequired("repo"); err != nil {
-		issueCommentCmd.PrintErrln(err)
-		os.Exit(1)
-	}
 	issueCommentCmd.Flags().IntVarP(&number, "number", "", 0, "issue number")
 	if err := issueCommentCmd.MarkFlagRequired("number"); err != nil {
 		issueCommentCmd.PrintErrln(err)

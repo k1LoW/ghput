@@ -35,6 +35,12 @@ var commitCmd = &cobra.Command{
 	Use:   "commit",
 	Short: "Put commit to branch",
 	Long:  `Put commit to branch.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if err := setOwnerRepo(); err != nil {
+			return err
+		}
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runCommit(os.Stdin, os.Stdout)
 	},
@@ -52,15 +58,7 @@ func runCommit(stdin io.Reader, stdout io.Writer) error {
 func init() {
 	rootCmd.AddCommand(commitCmd)
 	commitCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
-	if err := commitCmd.MarkFlagRequired("owner"); err != nil {
-		commitCmd.PrintErrln(err)
-		os.Exit(1)
-	}
 	commitCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
-	if err := commitCmd.MarkFlagRequired("repo"); err != nil {
-		commitCmd.PrintErrln(err)
-		os.Exit(1)
-	}
 	commitCmd.Flags().StringVarP(&branch, "branch", "", "master", "branch")
 	if err := commitCmd.MarkFlagRequired("branch"); err != nil {
 		commitCmd.PrintErrln(err)
