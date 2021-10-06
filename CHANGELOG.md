@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.11.0](https://github.com/k1LoW/ghput/compare/v0.10.0...v0.11.0) (2021-10-06)
+
+* Add `--release` option [#24](https://github.com/k1LoW/ghput/pull/24) ([k1LoW](https://github.com/k1LoW))
+* Change `ghput commit` `--branch` option to set default branch as default value [#23](https://github.com/k1LoW/ghput/pull/23) ([k1LoW](https://github.com/k1LoW))
+* Add `ghput tag` [#22](https://github.com/k1LoW/ghput/pull/22) ([k1LoW](https://github.com/k1LoW))
+* Support GITHUB_REPOSITORY on all sub commands [#21](https://github.com/k1LoW/ghput/pull/21) ([k1LoW](https://github.com/k1LoW))
+* Get `owner` and `repo` from `GITHUB_REPOSITORY` [#20](https://github.com/k1LoW/ghput/pull/20) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.10.0](https://github.com/k1LoW/ghput/compare/v0.9.0...v0.10.0) (2021-10-06)
 
 * Put comment to latest merged pull request ( Add `--latest-merged` ) [#19](https://github.com/k1LoW/ghput/pull/19) ([k1LoW](https://github.com/k1LoW))
