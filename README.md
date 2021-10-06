@@ -10,6 +10,17 @@
 $ echo 'This is comment !!' | GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput issue-comment --owner k1LoW --repo myrepo --number 1
 ```
 
+**Put comment to issue on GitHub Actions:**
+
+ghput get `owner` and `repo` from [`GITHUB_REPOSITORY`](https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables).
+
+``` yaml
+- name: Put comment
+  run: echo 'This is comment !!' | ghput issue-comment --number 1
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 **Put comment to pull request:**
 
 ``` console
