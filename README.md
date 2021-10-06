@@ -52,6 +52,12 @@ $ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput commit --owner k1LoW --repo myrepo --branc
 $ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput tag --owner k1LoW --repo myrepo --branch main --tag v0.0.1
 ```
 
+Put a time based tag when the tag option is omitted ( default time format: `%Y%m%d-%H%M%S%z` )
+
+``` console
+$ GITHUB_TOKEN=XXXXXxxxxxXXxxxx ghput tag --owner k1LoW --repo myrepo --tag-time-format '%Y%m%d%H%M'
+```
+
 **Put tag as release:**
 
 
