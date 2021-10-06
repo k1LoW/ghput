@@ -16,7 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -54,4 +56,16 @@ func Execute() {
 	}
 }
 
-func init() {}
+func setOwnerRepo() error {
+	if owner == "" && repo == "" && os.Getenv("GITHUB_REPOSITORY") != "" {
+		splitted := strings.Split(os.Getenv("GITHUB_REPOSITORY"), "/")
+		if len(splitted) == 2 {
+			owner = splitted[0]
+			repo = splitted[1]
+		}
+	}
+	if owner == "" || repo == "" {
+		return errors.New("--owner and --repo are not set")
+	}
+	return nil
+}

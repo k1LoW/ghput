@@ -27,7 +27,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
 	"github.com/k1LoW/ghput/gh"
 	"github.com/spf13/cobra"
@@ -39,15 +38,8 @@ var prCommentCmd = &cobra.Command{
 	Short: "Put comment to pull request",
 	Long:  `Put comment to pull request.`,
 	Args: func(cmd *cobra.Command, args []string) error {
-		if owner == "" && repo == "" && os.Getenv("GITHUB_REPOSITORY") != "" {
-			splitted := strings.Split(os.Getenv("GITHUB_REPOSITORY"), "/")
-			if len(splitted) == 2 {
-				owner = splitted[0]
-				repo = splitted[1]
-			}
-		}
-		if owner == "" || repo == "" {
-			return errors.New("--owner and --repo are not set")
+		if err := setOwnerRepo(); err != nil {
+			return err
 		}
 		if number > 0 && latestMerged {
 			return errors.New("specify one of --number and --latest-merged")
