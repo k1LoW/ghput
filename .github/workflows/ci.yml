@@ -23,6 +23,8 @@ jobs:
 
       - name: Test
         run: make ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run codecov
         run: codecov
