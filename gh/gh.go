@@ -6,23 +6,18 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"net"
-	"net/http"
-	"net/url"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/google/go-github/v39/github"
+	"github.com/k1LoW/go-github-client/v39/factory"
 )
 
 const (
-	defaultBaseURL = "https://api.github.com/"
-	uploadBaseURL  = "https://uploads.github.com/"
-	footerFormat   = "<!-- Put by ghput %s-->"
+	footerFormat = "<!-- Put by ghput %s-->"
 )
 
 type Gh struct {
@@ -34,35 +29,12 @@ type Gh struct {
 
 // New return Gh
 func New(owner, repo, key string) (*Gh, error) {
-	c := github.NewClient(httpClient())
-	baseURL := os.Getenv("GITHUB_BASE_URL")
-	if baseURL == "" {
-		baseURL = os.Getenv("GITHUB_API_URL")
-	} else {
-		_, _ = fmt.Fprintf(os.Stderr, "%s\n", "env GITHUB_BASE_URL is deprecated. Use GITHUB_API_URL")
-	}
-	if baseURL != "" {
-		baseEndpoint, err := url.Parse(baseURL)
-		if err != nil {
-			return nil, err
-		}
-		if !strings.HasSuffix(baseEndpoint.Path, "/") {
-			baseEndpoint.Path += "/"
-		}
-		c.BaseURL = baseEndpoint
-	}
-	if uploadURL := os.Getenv("GITHUB_UPLOAD_URL"); uploadURL != "" {
-		uploadEndpoint, err := url.Parse(uploadURL)
-		if err != nil {
-			return nil, err
-		}
-		if !strings.HasSuffix(uploadEndpoint.Path, "/") {
-			uploadEndpoint.Path += "/"
-		}
-		c.UploadURL = uploadEndpoint
+	client, err := factory.NewGithubClient()
+	if err != nil {
+		return nil, err
 	}
 	return &Gh{
-		client: c,
+		client: client,
 		owner:  owner,
 		repo:   repo,
 		key:    key,
@@ -390,33 +362,6 @@ func (g *Gh) CreateRelease(ctx context.Context, tag, title, body string) error {
 		return err
 	}
 	return nil
-}
-
-type roundTripper struct {
-	transport   *http.Transport
-	accessToken string
-}
-
-func (rt roundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
-	r.Header.Set("Authorization", fmt.Sprintf("token %s", rt.accessToken))
-	return rt.transport.RoundTrip(r)
-}
-
-func httpClient() *http.Client {
-	t := &http.Transport{
-		Dial: (&net.Dialer{
-			Timeout: 5 * time.Second,
-		}).Dial,
-		TLSHandshakeTimeout: 5 * time.Second,
-	}
-	rt := roundTripper{
-		transport:   t,
-		accessToken: os.Getenv("GITHUB_TOKEN"),
-	}
-	return &http.Client{
-		Timeout:   time.Second * 10,
-		Transport: rt,
-	}
 }
 
 func unique(in []string) []string {
