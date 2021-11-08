@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/google/go-github/v39 v39.2.0
 	github.com/itchyny/timefmt-go v0.1.3
-	github.com/k1LoW/go-github-client/v39 v39.2.0
+	github.com/k1LoW/go-github-client/v39 v39.2.1
 	github.com/mattn/go-colorable v0.1.11
 	github.com/spf13/cobra v1.2.1
 )
