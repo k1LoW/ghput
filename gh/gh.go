@@ -366,12 +366,12 @@ func (g *Gh) CreateRelease(ctx context.Context, tag, title, body string) error {
 
 func unique(in []string) []string {
 	m := map[string]struct{}{}
-	for _, s := range in {
-		m[s] = struct{}{}
-	}
 	u := []string{}
-	for s := range m {
-		u = append(u, s)
+	for _, s := range in {
+		if _, ok := m[s]; !ok {
+			u = append(u, s)
+		}
+		m[s] = struct{}{}
 	}
 	return u
 }
