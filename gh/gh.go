@@ -20,6 +20,8 @@ const (
 	footerFormat = "<!-- Put by ghput %s-->"
 )
 
+var rep = strings.NewReplacer("\\n", "\n", "\\t", "\t")
+
 type Gh struct {
 	client *github.Client
 	owner  string
@@ -45,9 +47,11 @@ func (g *Gh) MakeComment(ctx context.Context, body, header, footer string) (stri
 	if body != "" && !strings.HasSuffix(body, "\n") {
 		body += "\n"
 	}
+	header = rep.Replace(header)
 	if header != "" && !strings.HasSuffix(header, "\n") {
 		header += "\n"
 	}
+	footer = rep.Replace(footer)
 	if footer != "" && !strings.HasSuffix(footer, "\n") {
 		footer += "\n"
 	}
