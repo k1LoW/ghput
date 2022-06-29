@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.12.2](https://github.com/k1LoW/ghput/compare/v0.12.1...v0.12.2) (2022-06-29)
+
+* Fix release flow [#30](https://github.com/k1LoW/ghput/pull/30) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.12.1](https://github.com/k1LoW/ghput/compare/v0.12.0...v0.12.1) (2022-06-09)
 
 * Fix handling of line breaks in headers and footers [#29](https://github.com/k1LoW/ghput/pull/29) ([k1LoW](https://github.com/k1LoW))
