@@ -25,11 +25,12 @@ build:
 	go build -ldflags="$(BUILD_LDFLAGS)"
 
 depsdev:
-	go install github.com/Songmu/ghch/cmd/ghch@v0.10.2
-	go install github.com/Songmu/gocredits/cmd/gocredits@v0.2.0
-	go install github.com/securego/gosec/v2/cmd/gosec@v2.8.1
+	go install github.com/Songmu/ghch/cmd/ghch@latest
+	go install github.com/Songmu/gocredits/cmd/gocredits@latest
+	go install github.com/securego/gosec/v2/cmd/gosec@latest
 
 prerelease:
+	git pull origin --tag
 	ghch -w -N ${VER}
 	gocredits . > CREDITS
 	git add CHANGELOG.md CREDITS
@@ -37,6 +38,7 @@ prerelease:
 	git tag ${VER}
 
 release:
-	goreleaser --rm-dist
+	git push origin main --tag
+	goreleaser --config .goreleaser/darwin.yml --rm-dist
 
 .PHONY: default test
