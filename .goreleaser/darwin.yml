@@ -1,0 +1,51 @@
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+builds:
+  -
+    id: ghput-darwin
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
+archives:
+  -
+    id: ghput-archive
+    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format_overrides:
+      - goos: darwin
+        format: zip
+    files:
+      - CREDITS
+      - README.md
+      - CHANGELOG.md
+checksum:
+  name_template: 'checksums-darwin.txt'
+snapshot:
+  name_template: "{{ .Version }}-next"
+changelog:
+  skip: true
+brews:
+  -
+    name: ghput
+    tap:
+      owner: k1LoW
+      name: homebrew-tap
+    commit_author:
+      name: k1LoW
+      email: k1lowxb@gmail.com
+    homepage: https://github.com/k1LoW/ghput
+    description: ghput is a CI-friendly tool that puts * on GitHub.
+    license: MIT
+    install: |
+      system './ghput', 'completion', 'bash', '--out', 'ghput.bash'
+      system './ghput', 'completion', 'zsh', '--out', 'ghput.zsh'
+      bin.install 'ghput'
+      bash_completion.install 'ghput.bash' => 'ghput'
+      zsh_completion.install 'ghput.zsh' => '_ghput'

@@ -24,6 +24,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -62,7 +63,7 @@ ghput completion zsh > $fpath[1]/_ghput
 		if out == "" {
 			o = os.Stdout
 		} else {
-			o, err = os.Create(out)
+			o, err = os.Create(filepath.Clean(out))
 			if err != nil {
 				return err
 			}

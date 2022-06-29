@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.12.1](https://github.com/k1LoW/ghput/compare/v0.12.0...v0.12.1) (2022-06-09)
+
+* Fix handling of line breaks in headers and footers [#29](https://github.com/k1LoW/ghput/pull/29) ([k1LoW](https://github.com/k1LoW))
+* Git.io deprecation [#28](https://github.com/k1LoW/ghput/pull/28) ([k1LoW](https://github.com/k1LoW))
+* Use octocov [#27](https://github.com/k1LoW/ghput/pull/27) ([k1LoW](https://github.com/k1LoW))
+* User k1LoW/go-github-client [#26](https://github.com/k1LoW/ghput/pull/26) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.12.0](https://github.com/k1LoW/ghput/compare/v0.11.0...v0.12.0) (2021-10-06)
 
 * Put a time based tag when `--tag` option is omitted. [#25](https://github.com/k1LoW/ghput/pull/25) ([k1LoW](https://github.com/k1LoW))
