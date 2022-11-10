@@ -9,9 +9,6 @@ on:
 jobs:
   linux-release:
     name: Release assets for Linux
-    strategy:
-      matrix:
-        go_version: [1.17]
     runs-on: ubuntu-latest
     steps:
       - name: Login to ghcr.io
@@ -21,15 +18,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Go ${{ matrix.go_version }} on Ubuntu
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go_version }}
-
       - name: Check out source code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Set up Go on Ubuntu
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
@@ -39,4 +36,3 @@ jobs:
           args: --config .goreleaser/linux.yml --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          

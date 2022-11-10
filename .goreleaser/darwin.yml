@@ -31,21 +31,3 @@ snapshot:
   name_template: "{{ .Version }}-next"
 changelog:
   skip: true
-brews:
-  -
-    name: ghput
-    tap:
-      owner: k1LoW
-      name: homebrew-tap
-    commit_author:
-      name: k1LoW
-      email: k1lowxb@gmail.com
-    homepage: https://github.com/k1LoW/ghput
-    description: ghput is a CI-friendly tool that puts * on GitHub.
-    license: MIT
-    install: |
-      system './ghput', 'completion', 'bash', '--out', 'ghput.bash'
-      system './ghput', 'completion', 'zsh', '--out', 'ghput.zsh'
-      bin.install 'ghput'
-      bash_completion.install 'ghput.bash' => 'ghput'
-      zsh_completion.install 'ghput.zsh' => '_ghput'
