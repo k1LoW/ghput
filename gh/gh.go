@@ -2,6 +2,7 @@ package gh
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -194,7 +195,7 @@ func (g *Gh) DeleteCurrentIssueComment(ctx context.Context, n int) error {
 	return nil
 }
 
-func (g *Gh) CommitAndPush(ctx context.Context, branch, content, rPath, message string) error {
+func (g *Gh) CommitAndPush(ctx context.Context, branch string, content []byte, rPath, message string) error {
 	srv := g.client.Git
 
 	dRef, _, err := srv.GetRef(ctx, g.owner, g.repo, path.Join("heads", branch))
@@ -211,9 +212,8 @@ func (g *Gh) CommitAndPush(ctx context.Context, branch, content, rPath, message 
 
 	if rPath != "" {
 		blob := &github.Blob{
-			Content:  github.String(content),
-			Encoding: github.String("utf-8"),
-			Size:     github.Int(len(content)),
+			Content:  github.String(base64.StdEncoding.EncodeToString(content)),
+			Encoding: github.String("base64"),
 		}
 
 		resB, _, err := srv.CreateBlob(ctx, g.owner, g.repo, blob)
@@ -263,7 +263,7 @@ func (g *Gh) CommitAndPush(ctx context.Context, branch, content, rPath, message 
 }
 
 func (g *Gh) CommitAndPushFile(ctx context.Context, branch, file, rPath, message string) error {
-	content := ""
+	var b []byte
 	if file != "" {
 		f, err := os.Stat(file)
 		if err != nil {
@@ -272,16 +272,15 @@ func (g *Gh) CommitAndPushFile(ctx context.Context, branch, file, rPath, message
 		if f.IsDir() {
 			return errors.New("'ghput commit' does not yet support directory commit.")
 		}
-		b, err := os.ReadFile(filepath.Clean(file))
+		b, err = os.ReadFile(filepath.Clean(file))
 		if err != nil {
 			return err
 		}
-		content = string(b)
 		if rPath == "" {
 			rPath = filepath.Base(file)
 		}
 	}
-	return g.CommitAndPush(ctx, branch, content, rPath, message)
+	return g.CommitAndPush(ctx, branch, b, rPath, message)
 }
 
 func (g *Gh) CreateGist(ctx context.Context, fname string, public bool, in io.Reader, out io.Writer) error {
