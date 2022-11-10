@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.13.0](https://github.com/k1LoW/ghput/compare/v0.12.2...v0.13.0) (2022-11-11)
+
+* Support binary [#32](https://github.com/k1LoW/ghput/pull/32) ([k1LoW](https://github.com/k1LoW))
+* Update go and pkg version [#31](https://github.com/k1LoW/ghput/pull/31) ([k1LoW](https://github.com/k1LoW))
+
 ## [v0.12.2](https://github.com/k1LoW/ghput/compare/v0.12.1...v0.12.2) (2022-06-29)
 
 * Fix release flow [#30](https://github.com/k1LoW/ghput/pull/30) ([k1LoW](https://github.com/k1LoW))
