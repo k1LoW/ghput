@@ -1,21 +1,21 @@
 module github.com/k1LoW/ghput
 
-go 1.17
+go 1.19
 
 require (
-	github.com/google/go-cmp v0.5.6
-	github.com/google/go-github/v39 v39.2.0
-	github.com/itchyny/timefmt-go v0.1.3
-	github.com/k1LoW/go-github-client/v39 v39.2.2
-	github.com/mattn/go-colorable v0.1.11
-	github.com/spf13/cobra v1.2.1
+	github.com/google/go-cmp v0.5.9
+	github.com/google/go-github/v45 v45.2.0
+	github.com/itchyny/timefmt-go v0.1.4
+	github.com/k1LoW/go-github-client/v45 v45.2.3
+	github.com/mattn/go-colorable v0.1.13
+	github.com/spf13/cobra v1.6.1
 )
 
 require (
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6 // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 )

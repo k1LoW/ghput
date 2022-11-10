@@ -5,15 +5,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
 
-	"github.com/google/go-github/v39/github"
-	"github.com/k1LoW/go-github-client/v39/factory"
+	"github.com/google/go-github/v45/github"
+	"github.com/k1LoW/go-github-client/v45/factory"
 )
 
 const (
@@ -273,7 +272,7 @@ func (g *Gh) CommitAndPushFile(ctx context.Context, branch, file, rPath, message
 		if f.IsDir() {
 			return errors.New("'ghput commit' does not yet support directory commit.")
 		}
-		b, err := ioutil.ReadFile(filepath.Clean(file))
+		b, err := os.ReadFile(filepath.Clean(file))
 		if err != nil {
 			return err
 		}
@@ -286,7 +285,7 @@ func (g *Gh) CommitAndPushFile(ctx context.Context, branch, file, rPath, message
 }
 
 func (g *Gh) CreateGist(ctx context.Context, fname string, public bool, in io.Reader, out io.Writer) error {
-	b, err := ioutil.ReadAll(in)
+	b, err := io.ReadAll(in)
 	if err != nil {
 		return err
 	}
