@@ -366,6 +366,19 @@ func (g *Gh) CreateRelease(ctx context.Context, tag, title, body string) error {
 	return nil
 }
 
+func (g *Gh) GetPullRequestNumber(ctx context.Context, branch string) (int, error) {
+	prs, _, err := g.client.PullRequests.List(ctx, g.owner, g.repo, &github.PullRequestListOptions{
+		Head: fmt.Sprintf("%s:%s", g.owner, branch),
+	})
+	if err != nil {
+		return 0, err
+	}
+	if len(prs) == 0 {
+		return 0, errors.New("pull request not found")
+	}
+	return prs[0].GetNumber(), nil
+}
+
 func unique(in []string) []string {
 	m := map[string]struct{}{}
 	u := []string{}

@@ -41,12 +41,21 @@ var prCommentCmd = &cobra.Command{
 		if err := setOwnerRepo(); err != nil {
 			return err
 		}
-		if number > 0 && latestMerged {
-			return errors.New("specify one of --number and --latest-merged")
+		fillParamCnt := 0
+		if number > 0 {
+			fillParamCnt++
 		}
-		if number == 0 && !latestMerged {
-			return errors.New("specify one of --number and --latest-merged")
+		if latestMerged {
+			fillParamCnt++
 		}
+		if branch != "" {
+			fillParamCnt++
+		}
+
+		if fillParamCnt != 1 {
+			return errors.New("specify one of --number and --latest-merged and --branch")
+		}
+
 		fi, err := os.Stdin.Stat()
 		if err != nil {
 			return err
@@ -73,6 +82,15 @@ func runPrComment(stdin io.Reader, stdout io.Writer) error {
 			return err
 		}
 	}
+
+	if number == 0 && branch != "" {
+		n, err := g.GetPullRequestNumber(ctx, branch)
+		if err != nil {
+			return err
+		}
+		number = n
+	}
+
 	b, err := g.IsPullRequest(ctx, number)
 	if err != nil {
 		return err
@@ -102,6 +120,7 @@ func init() {
 	rootCmd.AddCommand(prCommentCmd)
 	prCommentCmd.Flags().StringVarP(&owner, "owner", "", "", "owner")
 	prCommentCmd.Flags().StringVarP(&repo, "repo", "", "", "repo")
+	prCommentCmd.Flags().StringVarP(&branch, "branch", "", "", "branch")
 	prCommentCmd.Flags().IntVarP(&number, "number", "", 0, "pull request number")
 	prCommentCmd.Flags().BoolVarP(&latestMerged, "latest-merged", "", false, "latest merged pull request")
 	prCommentCmd.Flags().StringVarP(&header, "header", "", "", "comment header")
