@@ -32,13 +32,17 @@ depsdev:
 prerelease:
 	git pull origin --tag
 	ghch -w -N ${VER}
-	gocredits . > CREDITS
+	gocredits -w .
 	git add CHANGELOG.md CREDITS
 	git commit -m'Bump up version number'
 	git tag ${VER}
 
+prerelease_for_tagpr:
+	gocredits -w .
+	git add CHANGELOG.md CREDITS go.mod go.sum
+
 release:
 	git push origin main --tag
-	goreleaser release --config .goreleaser/darwin.yml --clean
+	goreleaser --clean
 
 .PHONY: default test
