@@ -39,6 +39,6 @@ prerelease:
 
 release:
 	git push origin main --tag
-	goreleaser --config .goreleaser/darwin.yml --rm-dist
+	goreleaser release --config .goreleaser/darwin.yml --clean
 
 .PHONY: default test
