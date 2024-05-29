@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.14.0](https://github.com/k1LoW/ghput/compare/v0.13.0...v0.14.0) (2024-05-29)
+
+* Identify the PR number from the branch name. [#35](https://github.com/k1LoW/ghput/pull/35) ([pyama86](https://github.com/pyama86))
+* Bump golang.org/x/crypto from 0.1.0 to 0.17.0 [#34](https://github.com/k1LoW/ghput/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump golang.org/x/crypto from 0.0.0-20210817164053-32db794688a5 to 0.1.0 [#33](https://github.com/k1LoW/ghput/pull/33) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.13.0](https://github.com/k1LoW/ghput/compare/v0.12.2...v0.13.0) (2022-11-11)
 
 * Support binary [#32](https://github.com/k1LoW/ghput/pull/32) ([k1LoW](https://github.com/k1LoW))
