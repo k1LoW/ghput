@@ -51,7 +51,6 @@ archives:
   id: ghput-binary
   name_template: '{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
   format: binary
-  rlcp: true
 checksum:
   name_template: 'checksums.txt'
 snapshot:
