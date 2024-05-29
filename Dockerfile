@@ -1,9 +1,20 @@
-FROM alpine:3.13
+FROM golang:1-bullseye AS builder
 
-RUN apk add --no-cache bash curl git
+WORKDIR /workdir/
+COPY . /workdir/
 
-ENTRYPOINT ["ghput"]
-CMD [ "-h" ]
+RUN apt-get update
 
-COPY ghput_*.apk /tmp/
-RUN apk add --allow-untrusted /tmp/ghput_*.apk
+RUN update-ca-certificates
+
+RUN make build
+
+FROM debian:bullseye-slim
+
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /workdir/ghput ./usr/bin
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
