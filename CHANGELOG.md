@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.14.0](https://github.com/k1LoW/ghput/compare/v0.14.0...v0.14.0) (2024-05-29)
+
+
 ## [v0.14.0](https://github.com/k1LoW/ghput/compare/v0.13.0...v0.14.0) (2024-05-29)
 
 * Identify the PR number from the branch name. [#35](https://github.com/k1LoW/ghput/pull/35) ([pyama86](https://github.com/pyama86))
