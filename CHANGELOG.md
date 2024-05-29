@@ -1,5 +1,7 @@
 # Changelog
 
+## [v0.14.4](https://github.com/k1LoW/ghput/compare/v0.14.3...v0.14.4) - 2024-05-29
+
 ## [v0.14.3](https://github.com/k1LoW/ghput/compare/v0.14.2...v0.14.3) - 2024-05-29
 
 ## [v0.14.2](https://github.com/k1LoW/ghput/compare/v0.14.1...v0.14.2) - 2024-05-29
