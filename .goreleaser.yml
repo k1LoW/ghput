@@ -1,0 +1,78 @@
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+builds:
+-
+  id: ghput-linux
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - linux
+  goarch:
+    - amd64
+    - arm64
+  ldflags:
+    - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
+-
+  id: ghput-darwin
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - darwin
+  goarch:
+    - amd64
+    - arm64
+  ldflags:
+    - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
+-
+  id: ghput-windows
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - windows
+  goarch:
+    - amd64
+  ldflags:
+    - -s -w -X github.com/k1LoW/ghput.version={{.Version}} -X github.com/k1LoW/ghput.commit={{.FullCommit}} -X github.com/k1LoW/ghput.date={{.Date}} -X github.com/k1LoW/ghput/version.Version={{.Version}}
+archives:
+-
+  id: ghput-archive
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  format_overrides:
+    - goos: darwin
+      format: zip
+  files:
+    - LICENSE
+    - CREDITS
+    - README.md
+    - CHANGELOG.md
+-
+  id: ghput-binary
+  name_template: '{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  format: binary
+  rlcp: true
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Version }}-next"
+changelog:
+  skip: true
+nfpms:
+  - id: ghput-nfpms
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"
+    builds:
+      - ghput-linux
+    homepage: https://github.com/k1LoW/ghput
+    maintainer: Ken'ichiro Oyama <k1lowxb@gmail.com>
+    description: ghput is a CI-friendly tool that puts * on GitHub.
+    license: MIT
+    formats:
+      - apk
+      - deb
+      - rpm
+    bindir: /usr/bin
+    epoch: 1
+release:
+  draft: true
+  replace_existing_draft: true
