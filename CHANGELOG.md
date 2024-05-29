@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.14.2](https://github.com/k1LoW/ghput/compare/v0.14.1...v0.14.2) - 2024-05-29
+- Set up tagpr by @k1LoW in https://github.com/k1LoW/ghput/pull/36
+
 ## [v0.14.1](https://github.com/k1LoW/ghput/compare/v0.14.0...v0.14.1) (2024-05-29)
 
 
@@ -105,4 +108,3 @@
 * Format comment using github.com/mattn/go-colorable [#1](https://github.com/k1LoW/ghput/pull/1) ([k1LoW](https://github.com/k1LoW))
 
 ## [v0.0.1](https://github.com/k1LoW/ghput/compare/175bc1d55020...v0.0.1) (2020-04-15)
-
