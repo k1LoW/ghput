@@ -1,3 +1,4 @@
+version: 2
 before:
   hooks:
     - go mod download
@@ -41,7 +42,7 @@ archives:
   name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
   format_overrides:
     - goos: darwin
-      format: zip
+      formats: [ 'zip' ]
   files:
     - LICENSE
     - CREDITS
@@ -50,13 +51,9 @@ archives:
 -
   id: ghput-binary
   name_template: '{{ .Binary }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-  format: binary
+  formats: [ 'binary' ]
 checksum:
   name_template: 'checksums.txt'
-snapshot:
-  name_template: "{{ .Version }}-next"
-changelog:
-  skip: true
 nfpms:
   - id: ghput-nfpms
     file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"
