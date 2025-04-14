@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.14.5](https://github.com/k1LoW/ghput/compare/v0.14.4...v0.14.5) - 2025-04-14
+- Bump golang.org/x/crypto from 0.17.0 to 0.31.0 by @dependabot in https://github.com/k1LoW/ghput/pull/40
+
 ## [v0.14.4](https://github.com/k1LoW/ghput/compare/v0.14.3...v0.14.4) - 2024-05-29
 
 ## [v0.14.3](https://github.com/k1LoW/ghput/compare/v0.14.2...v0.14.3) - 2024-05-29
