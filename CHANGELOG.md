@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.14.7](https://github.com/k1LoW/ghput/compare/v0.14.6...v0.14.7) - 2026-07-11
+
+- Bump golang.org/x/crypto from 0.45.0 to 0.52.0 by @dependabot[bot] in https://github.com/k1LoW/ghput/pull/46
+
 ## [v0.14.6](https://github.com/k1LoW/ghput/compare/v0.14.5...v0.14.6) - 2025-11-20
 - chore: setup tagpr labels by @k1LoW in https://github.com/k1LoW/ghput/pull/43
 - Bump golang.org/x/crypto from 0.35.0 to 0.45.0 by @dependabot[bot] in https://github.com/k1LoW/ghput/pull/45
